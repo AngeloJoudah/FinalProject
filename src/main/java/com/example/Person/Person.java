@@ -2,7 +2,17 @@ package com.example.Person;
 
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+
+@Entity
 public class Person {
+	@Id
+	@SequenceGenerator(name = "person_id_sequence",sequenceName = "person_id_sequence")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_id_ sequence")
 	Integer _id;
 	String name;
 	String email;
@@ -13,6 +23,9 @@ public class Person {
 		this.name = name;
 		this.email = email;
 		this.age = age;
+	}
+	public Person() {
+		// TODO Auto-generated constructor stub
 	}
 	public int get_id() {
 		return _id;

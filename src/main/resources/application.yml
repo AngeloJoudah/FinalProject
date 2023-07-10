@@ -8,12 +8,10 @@ spring:
     password: ${DB_PSWD}
   jpa:
     hibernate:
-    	ddl-auto: create-drop
+      ddl-auto: create-drop
     properties:
       hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       format_sql: true
-  main:
-  
   web-application-type: servlet
     

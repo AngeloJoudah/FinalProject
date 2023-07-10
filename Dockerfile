@@ -1,25 +1,24 @@
-FROM maven:3.8.1-openjdk-11-slim AS build
+FROM maven:3.8.3-openjdk-17 AS build
 RUN mkdir /app
 WORKDIR /app
 
 # Copy the Maven project files to the container
-COPY ../../pom.xml .
-COPY src ./src
-
+COPY . .
+RUN pwd
 # Build the Maven project
-RUN mvn clean package -DskipTests
-
+RUN mvn clean package -DskipTests 
+RUN ls ./target
 # Use a lightweight Java runtime as the base image
-FROM openjdk:11-jre-slim
+FROM openjdk:17
 
-ARG username = ${DB_URL}
-ARG url = ${DB_USERNAME}
-ARG password = ${DB_PSWD}
+ARG username=${DB_URL}
+ARG url=${DB_USERNAME}
+ARG password=${DB_PSWD}
 
 # Set the working directory in the container
 
 # Copy the JAR file built in the previous stage
-COPY --from=build /app/target/your-project.jar ./app.jar
-
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar .
+EXPOSE 8080
 # Specify the command to run the Spring Boot application
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]

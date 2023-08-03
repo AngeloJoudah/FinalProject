@@ -3,17 +3,16 @@ server:
   
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PSWD}
+    url: jdbc:postgresql://fpbepgql.postgres.database.azure.com/cst
+    username: Angelo
+    password: Bella514!
   jpa:
+    show-sql: true
     hibernate:
-    	ddl-auto: create-drop
+      ddl-auto: create-drop
     properties:
       hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       format_sql: true
-  main:
-  
   web-application-type: servlet
     

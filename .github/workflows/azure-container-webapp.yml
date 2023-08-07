@@ -66,6 +66,7 @@ jobs:
           DB_PSWD: ${{ secrets.DB_PSWD }}
         uses: docker/build-push-action@v2
         with:
+          run: echo $DB_URL
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./Dockerfile

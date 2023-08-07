@@ -38,7 +38,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: maven:latest
+    runs-on: maven-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
   deploy:
     permissions:
       contents: none
-    runs-on: openjdk:latest
+    runs-on: openjdk-latest
     needs: build
     environment:
       name: 'Development'

@@ -67,6 +67,7 @@ jobs:
           file: ./Dockerfile
 
   deploy:
+    runs-on: ubuntu-latest
     permissions:
       contents: none
 

@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Use a lightweight Java runtime as the base image
-FROM openjdk:17-jre-slim
+FROM openjdk:17-jdk-slim
 
 ARG username=$DB_URL
 ARG url=$DB_USERNAME

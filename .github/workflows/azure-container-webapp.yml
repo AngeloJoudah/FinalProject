@@ -28,7 +28,9 @@ name: Build and deploy a container to an Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: your-app-name  # set this to the name of your Azure Web App
-
+  DB_URL: ${{ secrets.DB_URL}}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PSWD: ${{ secrets.DB_PSWD }}
 on:
   push:
     branches: [ "main" ]

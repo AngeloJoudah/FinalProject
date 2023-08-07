@@ -12,9 +12,9 @@ RUN mvn clean package -DskipTests
 # Use a lightweight Java runtime as the base image
 FROM openjdk:11-jre-slim
 
-ARG username = ${DB_URL}
-ARG url = ${DB_USERNAME}
-ARG password = ${DB_PSWD}
+ARG username=$DB_URL
+ARG url=$DB_USERNAME
+ARG password=$DB_PSWD
 
 # Set the working directory in the container
 

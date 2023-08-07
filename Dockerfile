@@ -1,4 +1,4 @@
-FROM maven:3.8.1-openjdk-11-slim AS build
+FROM maven:3.8.1-openjdk-17-slim AS build
 RUN mkdir /app
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Use a lightweight Java runtime as the base image
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jre-slim
 
 ARG username=$DB_URL
 ARG url=$DB_USERNAME

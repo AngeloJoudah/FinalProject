@@ -28,9 +28,6 @@ name: Build and deploy a container to an Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: your-app-name  # set this to the name of your Azure Web App
-  DB_URL: ${{ secrets.DB_URL}}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PSWD: ${{ secrets.DB_PSWD }}
 on:
   push:
     branches: [ "main" ]
@@ -41,7 +38,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: openjdk:17-jre-slim
 
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +63,6 @@ jobs:
           DB_PSWD: ${{ secrets.DB_PSWD }}
         uses: docker/build-push-action@v2
         with:
-          run: echo $DB_URL
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./Dockerfile

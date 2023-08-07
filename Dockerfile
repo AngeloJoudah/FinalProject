@@ -7,7 +7,7 @@ COPY ../../pom.xml .
 COPY src ./src
 
 # Build the Maven project
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests 
 
 # Use a lightweight Java runtime as the base image
 FROM openjdk:17-jdk-slim
@@ -19,7 +19,7 @@ ARG password=$DB_PSWD
 # Set the working directory in the container
 
 # Copy the JAR file built in the previous stage
-COPY --from=build /app/target/app.jar ./app.jar
+COPY --from=build /app/target/demo-0.01-SNAPSHOT.jar ./app.jar
 
 # Specify the command to run the Spring Boot application
 CMD ["java", "-jar", "app.jar"]

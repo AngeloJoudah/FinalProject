@@ -55,16 +55,22 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: Build and push container image to registry
+      - name: Login to the ACR server
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_REGISTRY_SERVER }}
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+          
+      - name: Build Docker image
         env: 
           DB_URL: ${{ secrets.DB_URL}}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PSWD: ${{ secrets.DB_PSWD }}
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
-          file: ./Dockerfile
+        run: docker build -t ${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }} .
+
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -86,4 +92,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
+          images: '${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }}'

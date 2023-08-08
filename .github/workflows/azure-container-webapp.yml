@@ -67,9 +67,7 @@ jobs:
           DB_URL: ${{ secrets.DB_URL}}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PSWD: ${{ secrets.DB_PSWD }}
-        run:
-           echo ${{ secrets.AZURE_REGISTRY_SERVER }}
-           docker build -t ${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }} .
+        run: docker build -t ${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }} .
         
       - name: Push Docker image to ACR
         run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/my-image:${{ github.sha }}

@@ -7,8 +7,9 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PSWD}
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto:
     properties:
       hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect

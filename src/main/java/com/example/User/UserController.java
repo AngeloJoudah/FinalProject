@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 	private final UserRepository userRepository;
+	private final AuthenticationService service;
 	
 	public UserController(UserRepository personRepository) {
 		this.userRepository = personRepository;
@@ -55,15 +56,20 @@ public class UserController {
 
 	
 	
-	@PostMapping
-	 public ResponseEntity<String> addPerson(@RequestBody Users newUser) {
+	@PostMapping("/register")
+	 public ResponseEntity<AuthenticationResponse> register(@RequestBody Users newUser) {
         try {
             userRepository.save(newUser);
-            return ResponseEntity.ok("Person added successfully!");
+            return ResponseEntity.ok(service.register(request));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add person.");
             }
         }
+	
+	@PostMapping("/authentication")
+	public ResponseEntity<AuthenticationResponse>(@RequestBody AuthenticationRequest request){
+		
+	}
 	
 	@DeleteMapping("{id}")
 	public void deletePerson(@PathVariable("id") Integer id) {

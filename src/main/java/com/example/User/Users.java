@@ -1,5 +1,7 @@
 package com.example.User;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -11,8 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 @Entity
-public class Users {
+public class Users implements UserDetails {
 	@Id
 	@SequenceGenerator(name = "user_id_sequence",sequenceName = "user_id_sequence")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
@@ -128,6 +133,29 @@ public class Users {
 	}
 	public void setTerms(Boolean terms) {
 		this.terms = terms;
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return (List.of(new SimpleGrantedAuthority(type.name())));
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 	

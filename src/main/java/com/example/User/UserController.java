@@ -29,10 +29,6 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("{id}")
-	public Optional<Users> getUser(@PathVariable("id") Integer id) {
-		return userRepository.findById(id);
-	}
 	@GetMapping
 	public ResponseEntity<List<Users>> getPeople(@RequestParam(required = false) String email, @RequestParam(required = false) String username)
 		{
@@ -41,7 +37,7 @@ public class UserController {
 			ls.add(userRepository.findByEmail(email).orElse(null));
 			return ResponseEntity.ok(ls);
 		}
-		if(username != null) {
+		else if(username != null) {
 			List<Users> ls = new ArrayList<Users>(1);
 			ls.add(userRepository.findByUsername(username).orElse(null));
 			return ResponseEntity.ok(ls);

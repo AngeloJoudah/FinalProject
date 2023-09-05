@@ -12,11 +12,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "_user")
+
 public class Users implements UserDetails {
 	@Id
 	@SequenceGenerator(name = "user_id_sequence",sequenceName = "user_id_sequence")
@@ -35,105 +46,13 @@ public class Users implements UserDetails {
     String lastName;
     @Column(nullable = false)
     Boolean terms;
-    public Users() {
-    	
-    }
-    public Users(Integer _id, String email, Integer age, String username, String name, String lastName, String password,
-			UserType type) {
-		super();
-		this._id = _id;
-		this.email = email;
-		this.age = age;
-		this.username = username;
-		this.name = name;
-		this.lastName = lastName;
-		this.password = password;
-		this.type = type;
-	}
 	@Column(nullable = false)
 	String password;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
 	UserType type;
-
-	public int get_id() {
-		return _id;
-	}
-	public void set_id(int _id) {
-		this._id = _id;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(_id, username);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Users other = (Users) obj;
-		return _id == other._id && Objects.equals(_id, other._id);
-	}
-
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Integer getAge() {
-		return age;
-	}
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-	public void set_id(Integer _id) {
-		this._id = _id;
-	}
-	@Override
-	public String toString() {
-		return "Users {_id=" + _id + ", email=" + email + ", age=" + age + ", username=" + username + ", name=" + name
-				+ ", lastName=" + lastName + ", password=" + password + ", type=" + type + ", " + terms +  "}";
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public UserType getType() {
-		return type;
-	}
-	public void setType(UserType type) {
-		this.type = type;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public Boolean getTerms() {
-		return terms;
-	}
-	public void setTerms(Boolean terms) {
-		this.terms = terms;
-	}
+    
+  
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return (List.of(new SimpleGrantedAuthority(type.name())));
@@ -144,18 +63,23 @@ public class Users implements UserDetails {
 	}
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
+	}
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+	@Override
+	public String getUsername() {
+		return this.username;
 	}
 	
 	

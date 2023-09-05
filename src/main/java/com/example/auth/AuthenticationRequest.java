@@ -1,4 +1,4 @@
-package main;
+package com.example.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,6 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
-	private String email;
+	private String username;
 	private String password;
 }

@@ -1,36 +1,42 @@
-package main;
+package com.example.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.example.User.UserRepository;
 
-@Configuration
+import lombok.RequiredArgsConstructor;
 
+@Configuration
+@RequiredArgsConstructor
 public class ApplicationConfig {
 
 	private final UserRepository repository;
 	
-	public ApplicationConfig() {
-		
-	}
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return username -> repository.findByEmail(username)
+		return username -> repository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProivder authProvider = new DaoAuthenticationProvider();
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
 	
 	@Bean
-	publc AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
 	

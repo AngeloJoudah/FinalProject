@@ -1,11 +1,7 @@
 package com.example.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.RegisterRequest;
+import com.example.auth.AuthenticationRequest;
+import com.example.auth.AuthenticationResponse;
+import com.example.auth.AuthenticationService;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
 
 public class UserController {
 
-	private final UserRepository userRepository;
-	private final AuthenticationService service;
-	
-	public UserController(UserRepository personRepository) {
-		this.userRepository = personRepository;
-	}
+	private UserRepository userRepository;
+	private AuthenticationService service;
+
 	
 	
 	@GetMapping
@@ -53,18 +54,13 @@ public class UserController {
 	
 	
 	@PostMapping("/register")
-	 public ResponseEntity<AuthenticationResponse> register(@RequestBody Users newUser) {
-        try {
-            userRepository.save(newUser);
-            return ResponseEntity.ok(service.register(request));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add person.");
-            }
+	 public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+            return ResponseEntity.ok(service.register(request));   
         }
 	
 	@PostMapping("/authentication")
-	public ResponseEntity<AuthenticationResponse>(@RequestBody AuthenticationRequest request){
-		
+	public ResponseEntity<AuthenticationResponse> Authenticate(@RequestBody AuthenticationRequest request){
+        return ResponseEntity.ok(service.authenticate(request));   
 	}
 	
 	@DeleteMapping("{id}")

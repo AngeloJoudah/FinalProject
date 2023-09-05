@@ -25,8 +25,8 @@ import lombok.RequiredArgsConstructor;
 
 public class UserController {
 
-	private UserRepository userRepository;
-	private AuthenticationService service;
+	private final UserRepository userRepository;
+	private final AuthenticationService service;
 
 	
 	

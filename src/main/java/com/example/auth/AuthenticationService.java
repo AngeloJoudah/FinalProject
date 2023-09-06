@@ -28,6 +28,7 @@ public class AuthenticationService {
 				.lastName(request.getLastname())
 				.email(request.getEmail())
 				.age(request.getAge())
+				.terms(request.getTerms())
 				.password(passwordEncoder.encode(request.getPassword()))
 				.type(request.getType())
 				.build();

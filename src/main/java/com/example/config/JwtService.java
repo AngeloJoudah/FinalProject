@@ -2,6 +2,7 @@ package com.example.config;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -43,7 +44,7 @@ public class JwtService {
 	}
 	
 	public String generateToken(Users userdetails) {
-		return generateToken(null,userdetails);
+		return generateToken(new HashMap<>(),userdetails);
 	}
 	
 	private Key getSignInKey() {

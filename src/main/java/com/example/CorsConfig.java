@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 	  
         registry.addMapping("/**")
-        		.allowedOriginPatterns("https://finalprojectangelo.azurewebsites.net/**","http://localhost:3000/**")
+        		.allowedOriginPatterns("http://localhost:3000/**","https://finalprojectangelo.azurewebsites.net/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)

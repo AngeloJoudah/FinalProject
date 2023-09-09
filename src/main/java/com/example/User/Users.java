@@ -34,13 +34,13 @@ public class Users implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
     @Column(nullable = false)
 	Integer _id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
 	String email;
     @Column(nullable = false)
 	Integer age;
     @Column(nullable = false)
 	String username;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String name;
     @Column(nullable = false)
     String lastName;

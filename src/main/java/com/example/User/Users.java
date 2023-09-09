@@ -38,9 +38,9 @@ public class Users implements UserDetails {
 	String email;
     @Column(nullable = false)
 	Integer age;
-    @Column(nullable = false)
-	String username;
     @Column(nullable = false, unique = true)
+	String username;
+    @Column(nullable = false)
     String name;
     @Column(nullable = false)
     String lastName;

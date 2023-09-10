@@ -1,0 +1,27 @@
+{
+  "name": "micro-services-pg2mongo",
+  "version": "1.0.0",
+  "description": "Micro service to handle data transfer for relational db (postgresql) to non-relational (mongodb)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "ts-node ./index.ts"
+
+  },
+  "author": "Angelo Joudah",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "mongoose": "^7.4.1",
+    "pg": "^8.11.2",
+    "pg-listen": "^1.7.0",
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.6"
+  }
+}

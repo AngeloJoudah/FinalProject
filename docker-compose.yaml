@@ -1,12 +1,53 @@
-version: '0.0.1'
+version: '3'
 services:
   user-api:
+    environment:
+     - URL
+     - USERNAME
+     - PSWD
     build:
+      args:
+       - URL=URL
+       - USERNAME=USERNAME
+       - PSWD=PSWD
       context: ./FPBESpringBoot/
       dockerfile: Dockerfile
-    image: nginx:latest
-
+    image: fpbe:latest
     ports:
-      - "80:80"
-    environment:
-      - name=value
+      - "8080:8080"
+  front-end:
+      build:
+       context: ./frontend
+       dockerfile: dockerfile
+      image: fpfe:latest
+  micro-services-pg2mongo:
+   image: micro-services-pg2mong:latest
+   environment:
+    - PGQL_HOST
+    - PGQL_PORT
+    - PGQL_USERNAME
+    - PGQL_PASSWORD
+    - PGQL_DATABASE
+    - MG_URL
+   build:
+    args:
+      - PGQL_HOST
+      - PGQL_PORT
+      - PGQL_USERNAME
+      - PGQL_PASSWORD
+      - PGQL_DATABASE
+      - MG_URL
+    context: ./micro-services-pg2mongo
+    dockerfile: Dockerfile
+  courseapi:
+   environment:
+    -MG_URL
+   build:
+    args:
+     -MG_URL=$MG_URL
+   image: courseapi:latest
+  
+
+
+
+

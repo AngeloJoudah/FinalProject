@@ -1,6 +1,6 @@
 import createListener from 'pg-listen'
 import { configDotenv } from 'dotenv'
-import { modelUser } from './src/user'
+import { modelUser } from './user'
 import mongoose from 'mongoose'
 
 const {Client} = require('pg')
@@ -8,18 +8,23 @@ const {Client} = require('pg')
 configDotenv({
     path:'./.env'
 })
-const url:string = process.env.MG_URL
+const url:string = process.env.MG_URL || ""
 
 const pgconfig = {
     user:process.env.PGQL_USERNAME,
     host:process.env.PGQL_HOST,
     database:process.env.PGQL_DATABASE,
     password:process.env.PGQL_PASSWORD,
-    port:process.env.PGQL_PORT,
+    port:Number(process.env.PGQL_PORT),
     ssl:true
 }
 
-const updateMongoDB = async (notification) =>{
+interface notification{
+    username:string,
+    name:string,
+    last_name:string
+}
+const updateMongoDB = async (notification:notification) =>{
     const {username,name,last_name} = notification
     const newUser = new modelUser({username:username,firstName:name,lastName:last_name})
     await mongoconnect()

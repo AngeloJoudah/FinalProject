@@ -1,0 +1,12 @@
+version: '0.0.1'
+services:
+  user-api:
+    build:
+      context: ./FPBESpringBoot/
+      dockerfile: Dockerfile
+    image: nginx:latest
+
+    ports:
+      - "80:80"
+    environment:
+      - name=value

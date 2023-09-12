@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connect = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const url = `mongodb://docdbfp:Ols5yE5Gqvn0ikyzcRkccAa8HC7gq8ASNm329sdpuaJKEl15ruuxV26fj4H3BValc4TfOxO7WzSGACDbtBu1iA%3D%3D@docdbfp.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@docdbfp@`;
+const url = process.env.MG_URL || "";
 const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     mongoose_1.default.set('strictQuery', false);
     const connection = yield mongoose_1.default.connect(url);

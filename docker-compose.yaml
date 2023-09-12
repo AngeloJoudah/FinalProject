@@ -39,10 +39,10 @@ services:
     dockerfile: Dockerfile
   courseapi:
    environment:
-    -MG_URL
+    - MG_URL
    build:
     args:
-     -MG_URL=$MG_URL
+     - MG_URL=$MG_URL
    image: $AZURE_REGISTRY_SERVER/courseapi:latest
   
 

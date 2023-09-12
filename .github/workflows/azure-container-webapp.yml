@@ -79,10 +79,17 @@ jobs:
           PGQL_DATABASE: ${{ secrets.PGQL_DATABASE }}
           MG_URL: ${{ secrets.MG_URL }}
           AZURE_REGISTRY_SERVER: ${{ secrets.AZURE_REGISTRY_SERVER }}
-        run:
-         docker-compose build --build-arg URL=$DB_URL --build-arg USERNAME=$DB_USERNAME --build-arg PSWD=$DB_PSWD \
-         --build-arg PGQL_HOST=$PGQL_HOST --build-arg PGQL_PORT=$PGQL_PORT --build-arg PGQL_USERNAME=$PGQL_USERNAME \
-         --build-arg PGQL_PASSWORD=$PGQL_PASSWORD --build-arg PGQL_DATABASE=$PGQL_DATABASE --build-arg MG_URL=$MG_URL \
+        run: |
+         docker-compose build \
+         --build-arg URL=$DB_URL \
+         --build-arg USERNAME=$DB_USERNAME \
+         --build-arg PSWD=$DB_PSWD \
+         --build-arg PGQL_HOST=$PGQL_HOST \
+         --build-arg PGQL_PORT=$PGQL_PORT \
+         --build-arg PGQL_USERNAME=$PGQL_USERNAME \
+         --build-arg PGQL_PASSWORD=$PGQL_PASSWORD \
+         --build-arg PGQL_DATABASE=$PGQL_DATABASE \
+         --build-arg MG_URL=$MG_URL \
          --build-arg AZURE_REGISTRY_SERVER=$AZURE_REGISTRY_SERVER
         
       - name: Push Docker image to ACR

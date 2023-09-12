@@ -1,8 +1,8 @@
 import express from 'express'
 import CourseRouter from './Router/CoursesRouter'
-import cors from 'cors'
 import bodyParser from 'body-parser'
 import UserRouter from './Router/UserRouter'
+const cors = require('cors')
 const app = express()
 const PORT = 80
 app.use(express.json())

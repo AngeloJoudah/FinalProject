@@ -12,16 +12,14 @@ services:
        - PSWD=PSWD
       context: ./FPBESpringBoot/
       dockerfile: Dockerfile
-    image: fpbe:latest
-    ports:
-      - "8080:8080"
+    image: $AZURE_REGISTRY_SERVER/fpbe:latest
   front-end:
       build:
        context: ./frontend
        dockerfile: dockerfile
-      image: fpfe:latest
+      image: $AZURE_REGISTRY_SERVER/fpfe:latest
   micro-services-pg2mongo:
-   image: micro-services-pg2mong:latest
+   image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
    environment:
     - PGQL_HOST
     - PGQL_PORT
@@ -45,7 +43,7 @@ services:
    build:
     args:
      -MG_URL=$MG_URL
-   image: courseapi:latest
+   image: $AZURE_REGISTRY_SERVER/courseapi:latest
   
 
 

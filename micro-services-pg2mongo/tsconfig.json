@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-      "target": "es6",                // Target ECMAScript version
-      "module": "commonjs",           // Specify module code generation
-      "outDir": "./dist",             // Output directory for compiled files
-      "rootDir": "./src",             // Directory where TypeScript source files are located
-      "strict": true,                 // Enable strict type-checking
-      "esModuleInterop": true,        // Enable compatibility with CommonJS modules
-      "resolveJsonModule": true       // Allow importing JSON files as modules
-    },
-    "include": ["src"]               // Specify which files to include for compilation
+  "compilerOptions": {
+    "target": "ES6",
+    "outDir": "./build/",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true
   }
+}

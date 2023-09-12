@@ -29,6 +29,7 @@ const updateMongoDB = async (notification:notification) =>{
     const newUser = new modelUser({username:username,firstName:name,lastName:last_name})
     await mongoconnect()
     await newUser.save().then(e =>{
+        e
     })
     mongoose.connection.close()
 }

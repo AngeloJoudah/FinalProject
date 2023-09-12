@@ -79,7 +79,7 @@ jobs:
           PGQL_DATABASE: ${{ secrets.PGQL_DATABASE }}
           MG_URL: ${{ secrets.MG_URL }}
           AZURE_REGISTRY_SERVER: ${{ secrets.AZURE_REGISTRY_SERVER }}
-        run:
+        run: |
          docker-compose build \
          --build-arg URL=$DB_URL \
          --build-arg USERNAME=$DB_USERNAME \

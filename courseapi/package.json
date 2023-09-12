@@ -22,7 +22,7 @@
     "typescript": "^5.1.6"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.13",
+    "@types/cors": "^2.8.14",
     "ts-node": "^10.9.1"
   }
 }

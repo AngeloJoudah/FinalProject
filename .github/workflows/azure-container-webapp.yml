@@ -122,8 +122,7 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v1.4.6
         with:
-         client-id: ${{ secrets.CLIENT_ID }}
-         tenant-id: ${{ secrets.TENANT_ID }}
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
 
       - name: Deploy to Azure Web App

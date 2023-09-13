@@ -133,7 +133,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          configuration-file: /home/runner/work/FinalProject/docker-compose.yaml
+          configuration-file: /home/runner/work/FinalProject/FinalProject/docker-compose.yaml
           images: |
            ${{ secrets.AZURE_REGISTRY_SERVER }}/courseapi:latest
            ${{ secrets.AZURE_REGISTRY_SERVER }}/micro-services-pg2mong:latest

@@ -117,9 +117,7 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
       - name: Azure Login
-        uses: Azure/login@v1.4.6
-        with:
-         Client-Id: ${{ secrets.CLIENT_ID }}
+        run: az login -u ${{ secrets.AZURE_USERNAME }} -p {{ secrets.AZURE_PASSWORD }}
         
 
       - name: Deploy to Azure Web App

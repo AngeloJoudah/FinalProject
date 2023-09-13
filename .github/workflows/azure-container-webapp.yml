@@ -128,7 +128,7 @@ jobs:
          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: where am I?
-        run: ls -r /home/runner/work/FinalProject
+        run: ls -R /home/runner/work/
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

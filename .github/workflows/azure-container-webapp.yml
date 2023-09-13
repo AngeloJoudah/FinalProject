@@ -105,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          path: /home/runner/work/FinalProject/
+          path: /home/runner/work/FinalProject/FinalProject/docker-compose.yaml
 
 
 

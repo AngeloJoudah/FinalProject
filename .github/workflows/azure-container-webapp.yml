@@ -126,7 +126,9 @@ jobs:
         uses: Azure/login@v1.4.6
         with:
          creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
+
+      - name: where am I?
+        run: ls -r /home/runner/work/FinalProject
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

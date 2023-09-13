@@ -100,6 +100,12 @@ jobs:
         run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpbe:latest \
       - name: Push Docker image to ACR
         run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpfe:latest
+        
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: /home/runner/work/FinalProject/
 
 
 
@@ -117,9 +123,10 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
         
-     # - name: Install Azure CLI
-     #   run: |
-     #     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: my-artifact
 
 
       - name: Azure Login

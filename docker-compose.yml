@@ -17,7 +17,7 @@ services:
     image: $AZURE_REGISTRY_SERVER/fpbe:latest
   front-end:
     ports:
-    - "80:443"
+    - "80:80"
     build:
        context: ./frontend
        dockerfile: dockerfile

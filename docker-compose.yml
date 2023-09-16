@@ -19,10 +19,10 @@ services:
     ports:
     - "80:80"
     - "443:443"
-      build:
+    build:
        context: ./frontend
        dockerfile: dockerfile
-      image: $AZURE_REGISTRY_SERVER/fpfe:latest
+    image: $AZURE_REGISTRY_SERVER/fpfe:latest
   micro-services-pg2mongo:
    image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
    environment:

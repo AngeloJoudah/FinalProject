@@ -7,5 +7,5 @@ export const RequireAuth = () => {
     if(!auth.user){
         return <Navigate to={'/login'}/>
     }
-
+    
 }

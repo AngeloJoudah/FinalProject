@@ -2,14 +2,14 @@ version: '3.8'
 services:
   user-api:
     environment:
-     - URL
-     - USERNAME
-     - PSWD
+     - URL=$URL
+     - USERNAME=$USERNAME
+     - PSWD=$PSWD
     build:
       args:
-       - URL=URL
-       - USERNAME=USERNAME
-       - PSWD=PSWD
+       - URL
+       - USERNAME
+       - PSWD
       context: ./FPBESpringBoot/
       dockerfile: Dockerfile
     image: $AZURE_REGISTRY_SERVER/fpbe:latest
@@ -21,12 +21,12 @@ services:
   micro-services-pg2mongo:
    image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
    environment:
-    - PGQL_HOST
-    - PGQL_PORT
-    - PGQL_USERNAME
-    - PGQL_PASSWORD
-    - PGQL_DATABASE
-    - MG_URL
+    - PGQL_HOST=$PGQL_HOST
+    - PGQL_PORT=$PGQL_PORT
+    - PGQL_USERNAME=$PGQL_USERNAME
+    - PGQL_PASSWORD=$PGQL_PASSWORD
+    - PGQL_DATABASE=$PGQL_DATABASE
+    - MG_URL=$MG_URL
    build:
     args:
       - PGQL_HOST
@@ -39,12 +39,12 @@ services:
     dockerfile: Dockerfile
   courseapi:
    environment:
-    - MG_URL
+    - MG_URL=$MG_URL
    build:
     dockerfile: Dockerfile
     context: ./courseapi
     args:
-      - MG_URL=$MG_URL
+      - MG_URL
    image: $AZURE_REGISTRY_SERVER/courseapi:latest
   
 

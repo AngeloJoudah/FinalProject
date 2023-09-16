@@ -15,7 +15,7 @@ export const AuthProvider = ({children}) => {
       username: yup.string().required(),
       email : yup.string().required(),
     });
-
+    
     setUser(userObj)
   }
 

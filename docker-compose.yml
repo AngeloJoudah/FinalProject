@@ -44,7 +44,7 @@ services:
     dockerfile: Dockerfile
   courseapi:
    ports:
-    - "80:8081"
+    - "8081:8081"
 
    environment:
     - MG_URL=$MG_URL

@@ -27,6 +27,10 @@ export const Login = () =>{
             )
         }
     }
+    const schema = yup.object().shape({
+        username: yup.string().required(),
+        password: yup.string().required()
+      });
 
     const validate = values =>{
         const errors = {}

@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 dotenv.config({path:'../.env'})
 const url =
 process.env.MG_URL || ""

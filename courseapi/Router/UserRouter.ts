@@ -29,13 +29,35 @@ UserRouter.post('/',async (request,response) =>{
     await mongoose.connection.close()
 })
 
-UserRouter.get('/:username',async(request,response)=>{
-    const username = request.params.username
-    await connect()
-    const user = modelUser.findOne({username:username})
-    response.json(user)
-    await mongoose.connection.close()
-})
+UserRouter.get('/:username', async (request, response) => {
+    const username = request.params.username;
+  
+    // Wrap the code in a try-catch block to handle potential errors
+    try {
+      // Establish the mongoose connection
+      await connect();
+  
+      // Use async/await to wait for the findOne operation to complete
+      const user = await modelUser.findOne({ username: username });
+  
+      // Check if the user was found
+      if (user) {
+        // Send a JSON response with the user data
+        response.json(user);
+      } else {
+        // If the user wasn't found, send a 404 status code
+        response.status(404).json({ message: 'User not found' });
+      }
+  
+      // Close the mongoose connection
+      await mongoose.connection.close();
+    } catch (error) {
+      // Handle any errors that occur during the process
+      console.error('Error:', error);
+      response.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
+  
 
 
 UserRouter.get('/',async(_request,response)=>{

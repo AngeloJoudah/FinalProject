@@ -1,4 +1,6 @@
 import mongoose from "mongoose"
+import dotenv from 'dotenv'
+dotenv.config({path:'../.env'})
 const url =
 process.env.MG_URL || ""
 export const connect = async() => {

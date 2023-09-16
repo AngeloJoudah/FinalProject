@@ -7,12 +7,16 @@ import {Container} from 'react-bootstrap'
 import {AddCourse} from "./pages/Courses/AddCourse";
 import { Login } from "./pages/Login/Login";
 import {CreateAccount} from './pages/Login/CreateAccount'
+import axios from "axios";
+import { AuthProvider } from "./auth/Auth";
+import { RequireAuth } from "./components/requireAuth";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
-      <Route index element={<Home/>}/>
-      <Route path='courses' element={<CourseList />}/>
-      <Route path='courses/add' element={<AddCourse />}/>
+      <Route index render element={<RequireAuth><Home/></RequireAuth>}/>
+      <Route path='courses' element={<RequireAuth><CourseList /></RequireAuth>}/>
+      <Route path='courses/add' element={<RequireAuth><AddCourse /></RequireAuth>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path="/signup" element={<CreateAccount/>}/>
     </Route>
@@ -20,13 +24,15 @@ const router = createBrowserRouter(
 )
 function App() {
   return (
-    <Container fluid>
-    <div className="App">
-      <Header/>
-      <RouterProvider router={router}/>
-      <Footer />
-    </div>
-    </Container>
+    <AuthProvider>
+      <Container fluid>
+      <div className="App">
+        <Header/>
+        <RouterProvider router={router}/>
+        <Footer />
+      </div>
+      </Container>
+    </AuthProvider>
   );
 }
 

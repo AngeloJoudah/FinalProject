@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../auth/Auth";
 import * as formik from 'formik'
 import * as yup from 'yup';
 
@@ -10,22 +11,21 @@ export const Login = () =>{
 // eslint-disable-next-line
     const [message,setMessage] = useState(<></>)
     const navigate = useNavigate()
-
+    const auth = useAuth()
     const { Formik } = formik;
 
-    const schema = yup.object({
-        username: yup.string().required(),
-        password: yup.string().required()
-    })
+
     const handleSubmit = async (values,formikBag) =>{
         if(values.password && values.username) {
             await axios
-            .get(`http://localhost:8080/api/v1/users/credentials?username=${values.username}&password=${values.password}`)
-            .then(e => {if(e.data.username === values.username && e.data.password === values.password) {navigate('/')}})
+            .post(`http://finalprojectangelo.azurewebsites.net/api/v1/authentication`,values)
+            .then(e => {
+                if(e.status == 200){
+                    auth.login(axios.get(`mongodb://docdbfp:Ols5yE5Gqvn0ikyzcRkccAa8HC7gq8ASNm329sdpuaJKEl15ruuxV26fj4H3BValc4TfOxO7WzSGACDbtBu1iA==@docdbfp.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&r/api/users/${values.username}`))
+                }
+            }
+            )
         }
-
-        //.then(request =>{setMessage(<></>)}) 
-        //: setMessage(<h3>Please fill out all form fields before submitting</h3>)
     }
 
     const validate = values =>{

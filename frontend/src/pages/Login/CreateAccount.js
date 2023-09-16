@@ -64,14 +64,10 @@ export const CreateAccount = () =>{
 
     const navigate = useNavigate()
     const handleSubmit = async (values,formikBag) =>{
-      console.log(values)
-      const emails = await axios.get(`http://localhost:8080/api/v1/users?email=${values.email}`)
-      const usernames = await axios.get(`http://localhost:8080/api/v1/users?username=${values.username}`)
-      console.log(emails.data,usernames.data)
-      if(emails.data[0] === null || !!usernames.data[0] === null){
-        await axios.post('http://localhost:8080/api/v1/users',values)
-        navigate('/courses')
-      }
+    const req = await axios.post('http://finalprojectangelo.azurewebsites.net/api/v1/users',values)
+    if(req.status === 200){
+      navigate('/courses')
+    }
 
 
 

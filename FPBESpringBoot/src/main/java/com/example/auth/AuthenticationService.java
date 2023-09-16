@@ -45,7 +45,6 @@ public class AuthenticationService {
 				request.getPassword()
 				);
 		authenticationManager.authenticate(token);
-		System.out.println(request.getUsername());
 		var user = repository.findByUsername(request.getUsername())
 		.orElseThrow();
 		var jwtToken = jwtService.generateToken(user);

@@ -100,6 +100,12 @@ jobs:
         run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpbe:latest \
       - name: Push Docker image to ACR
         run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpfe:latest
+        
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: /home/runner/work/FinalProject/FinalProject/docker-compose.yaml
 
 
 
@@ -116,13 +122,27 @@ jobs:
     steps:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: my-artifact
+
+
+      - name: Azure Login
+        uses: Azure/login@v1.4.6
+        with:
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: where am I?
+        run: ls -R /home/runner/work/
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          configuration-file: docker-compose.yaml
           images: |
            ${{ secrets.AZURE_REGISTRY_SERVER }}/courseapi:latest
            ${{ secrets.AZURE_REGISTRY_SERVER }}/micro-services-pg2mong:latest

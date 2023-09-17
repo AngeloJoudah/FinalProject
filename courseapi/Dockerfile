@@ -12,4 +12,4 @@ FROM node:alpine
 WORKDIR /app
 COPY --from=build /app/build /app/dist
 EXPOSE 8081
-CMD ["node","app.js"]
+CMD ["node","dist/app.js"]

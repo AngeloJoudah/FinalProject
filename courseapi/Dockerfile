@@ -10,6 +10,6 @@ RUN npm i --omit=dev
 RUN npx tsc
 FROM node:alpine
 WORKDIR /app
-COPY --from=build /app/build /app/dist
+COPY --from=build /app /app
 EXPOSE 8081
-CMD ["node","dist/app.js"]
+CMD ["node","build/app.js"]

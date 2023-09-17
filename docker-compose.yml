@@ -1,19 +1,5 @@
 version: '3.8'
 services:
-
-  nginx-proxy:
-    image: $AZURE_REGISTRY_SERVER/nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - user-api
-      - front-end
-      - micro-services-pg2mongo
-      - courseapi
-
   user-api:
     environment:
       - URL
@@ -48,4 +34,17 @@ services:
     dockerfile: Dockerfile
     context: ./courseapi
    image: $AZURE_REGISTRY_SERVER/courseapi:latest
+   
+  nginx-proxy:
+    image: $AZURE_REGISTRY_SERVER/nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - user-api
+      - front-end
+      - micro-services-pg2mongo
+      - courseapi
   

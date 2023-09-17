@@ -49,7 +49,7 @@ services:
       - courseapi
   
   nginx-proxy:
-    image: nginx:latest
+    image: $AZURE_REGISTRY_SERVER/nginx:latest
     build:
       context: ./nginx/
       dockerfile: Dockerfile

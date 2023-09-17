@@ -35,7 +35,7 @@ services:
     build:
       context: ./frontend
       dockerfile: dockerfile
-    image: fpfe:latest
+    image: $AZURE_REGISTRY_SERVER/fpfe:latest
   micro-services-pg2mongo:
     image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
     build:

@@ -55,9 +55,9 @@ jobs:
           AZURE_REGISTRY_SERVER: ${{ secrets.AZURE_REGISTRY_SERVER }}
         run: |
          docker-compose build \
-         --build-arg URL=$DB_URL \
-         --build-arg USERNAME=$DB_USERNAME \
-         --build-arg PSWD=$DB_PSWD \
+         --build-arg URL=$URL \
+         --build-arg USERNAME=$USERNAME \
+         --build-arg PSWD=$PSWD \
          --build-arg PGQL_HOST=$PGQL_HOST \
          --build-arg PGQL_PORT=$PGQL_PORT \
          --build-arg PGQL_USERNAME=$PGQL_USERNAME \

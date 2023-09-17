@@ -1,29 +1,51 @@
 version: '3.8'
 services:
+
+  nginx-proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - user-api
+      - front-end
+      - micro-services-pg2mongo
+      - courseapi
+
   user-api:
+    environment:
+      - URL
+      - USERNAME
+      - PSWD
     ports:
       - "8080:8080"
     build:
+      args:
+        - URL
+        - USERNAME
+        - PSWD
       context: ./FPBESpringBoot/
       dockerfile: Dockerfile
-    image: $AZURE_REGISTRY_SERVER/fpbe:latest
+    image: fpbe:latest
   front-end:
     ports:
       - "80:80"
     build:
       context: ./frontend
       dockerfile: dockerfile
-    image: $AZURE_REGISTRY_SERVER/fpfe:latest
+    image: fpfe:latest
   micro-services-pg2mongo:
-    image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
+    image: micro-services-pg2mong:latest
     build:
       context: ./micro-services-pg2mongo
       dockerfile: Dockerfile
   courseapi:
    ports:
-      - "80:8081"
+      - "8081:80"
    build:
     dockerfile: Dockerfile
     context: ./courseapi
-   image: $AZURE_REGISTRY_SERVER/courseapi:latest
+   image: courseapi:latest
   

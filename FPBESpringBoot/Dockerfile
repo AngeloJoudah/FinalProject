@@ -20,8 +20,8 @@ EXPOSE 8080
 ARG URL
 ARG USERNAME
 ARG PSWD
-ENV DB_URL=$URL
-ENV DB_USERNAME=$USERNAME
-ENV DB_PSWD=$PSWD
+ENV URL=$URL
+ENV USERNAME=$USERNAME
+ENV PSWD=$PSWD
 # Specify the command to run the Spring Boot application
 CMD ["java", "-jar", "app.jar"]

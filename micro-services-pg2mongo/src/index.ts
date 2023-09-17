@@ -1,13 +1,9 @@
 import createListener from 'pg-listen'
-import { configDotenv } from 'dotenv'
 import { modelUser } from './user'
 import mongoose from 'mongoose'
 
 const {Client} = require('pg')
 
-configDotenv({
-    path:'./.env'
-})
 const url:string = process.env.MG_URL || ""
 
 const pgconfig = {

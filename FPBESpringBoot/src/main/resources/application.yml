@@ -1,12 +1,12 @@
 server:
   port: 8080
-  servlet:
-    context-path: /fpbe
+    #  servlet:
+    #    context-path: /fpbe
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PSWD}
+    url: ${URL}
+    username: ${USERNAME}
+    password: ${PSWD}
   jpa:
     show-sql: true
     hibernate:

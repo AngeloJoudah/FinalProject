@@ -50,3 +50,5 @@ services:
     - front-end
     - micro-services-pg2mongo
     - courseapi
+  volumes:
+   WEBAPP_STORAGE_HOME:

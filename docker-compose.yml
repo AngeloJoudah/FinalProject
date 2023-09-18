@@ -1,7 +1,7 @@
 version: '3.8'
-environment:
- - AZURE_REGISTRY_SERVER
 services:
+  environment:
+   - AZURE_REGISTRY_SERVER
   user-api:
     environment:
       - URL

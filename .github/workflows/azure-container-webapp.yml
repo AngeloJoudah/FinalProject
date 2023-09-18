@@ -121,5 +121,6 @@ jobs:
            ${{ secrets.AZURE_REGISTRY_SERVER }}/micro-services-pg2mong:latest
            ${{ secrets.AZURE_REGISTRY_SERVER }}/fpbe:latest
            ${{ secrets.AZURE_REGISTRY_SERVER }}/fpfe:latest
+           ${{ secrets.AZURE_REGISTRY_SERVER }}/nginx:latest
           
            

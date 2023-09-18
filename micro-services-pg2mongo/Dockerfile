@@ -21,4 +21,4 @@ RUN npx tsc
 FROM node:alpine
 WORKDIR /app
 COPY --from=build /app/build /app/build
-CMD ["node","index.js"]
+CMD ["node","./build/index.js"]

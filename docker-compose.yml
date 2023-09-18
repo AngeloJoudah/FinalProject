@@ -36,7 +36,7 @@ services:
     - "80:80"
     - "443:443"
    volumes:
-    - WEBAPP_STORAGE_HOME:/etc/nginx/nginx.conf
+    - WEBAPP_STORAGE_HOME:/etc/nginx/conf.d
    depends_on:
     - user-api
     - front-end

@@ -42,17 +42,17 @@ services:
     context: ./micro-services-pg2mongo
     dockerfile: Dockerfile
   courseapi:
-   ports:
-    - "80:8081"
+    ports:
+     - "80:8081"
 
-   environment:
-    - MG_URL=$MG_URL
-   build:
-    dockerfile: Dockerfile
-    context: ./courseapi
-    args:
+    environment:
+     - MG_URL=$MG_URL
+    build:
+     dockerfile: Dockerfile
+     context: ./courseapi
+     args:
       - MG_URL
-   image: $AZURE_REGISTRY_SERVER/courseapi:latest
+    image: $AZURE_REGISTRY_SERVER/courseapi:latest
   
 
 

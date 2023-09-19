@@ -19,5 +19,6 @@ RUN npm run build --omit=dev
 FROM node:alpine
 WORKDIR /app/
 COPY --from=build /app/build/ ./dist
+RUN npm i serve -g
 EXPOSE 80
 CMD ['serve','-p','80']

@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
           
-
+      - name: build images
         run: |
          docker-compose build
         

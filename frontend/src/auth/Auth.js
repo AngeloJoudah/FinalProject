@@ -8,15 +8,7 @@ export const AuthProvider = ({children}) => {
   const [user,setUser] = useState(null)
   
   const login = (user) => {
-    
-    const userObj = yup.object().shape({
-      name: yup.string().required(),
-      lastName: yup.string().required(),
-      username: yup.string().required(),
-      email : yup.string().required(),
-    });
-    
-    setUser(userObj)
+    setUser(user)
   }
 
   const logout = () =>{

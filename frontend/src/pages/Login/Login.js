@@ -16,12 +16,19 @@ export const Login = () =>{
 
 
     const handleSubmit = async (values,formikBag) =>{
+        console.log(values)
         if(values.password && values.username) {
             await axios
-            .post(`http://finalprojectangelo.azurewebsites.net/api/v1/authentication`,values)
+            .post(`http://localhost:8080/api/v1/auth/authentication`,values,
+            {headers:{
+                "Content-Type":"application/json"
+            }
+            }
+            )
             .then(e => {
                 if(e.status == 200){
-                    auth.login(axios.get(`mongodb://docdbfp:Ols5yE5Gqvn0ikyzcRkccAa8HC7gq8ASNm329sdpuaJKEl15ruuxV26fj4H3BValc4TfOxO7WzSGACDbtBu1iA==@docdbfp.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&r/api/users/${values.username}`))
+                    console.log(e.data)
+                    auth.login(axios.get(`http://localhost:80/api/users/${values.username}`))
                 }
             }
             )
@@ -44,11 +51,12 @@ export const Login = () =>{
     }
 
     return(
-        <>
+        <div className="mx-3">
         <Formik
         validationSchema={schema}
         onSubmit={handleSubmit}
         validate={validate}
+        className="mx-3"
         initialValues={{
           username: '',
           password: ''
@@ -91,6 +99,6 @@ export const Login = () =>{
             }
         }
         </Formik>
-        </>
+        </div>
     )
 }

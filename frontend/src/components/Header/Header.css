@@ -1,8 +1,7 @@
 .Header{
-    background-color: rgb(165, 255, 170);
+    background-color: rgb(165, 255, 170) !important;
     text-align: center;
     box-shadow: 2px 2px 3px black;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
 
 }

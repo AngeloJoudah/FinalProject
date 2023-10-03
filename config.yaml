@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
  name: finalprojectconfig
 data:
- front-end-url: front-end-service
+ front-end-url: webapp-service
+ ingress-mapping: app-ingress

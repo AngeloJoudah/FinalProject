@@ -15,6 +15,8 @@ export const Header = () =>{
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/courses">Courses</Nav.Link>
+              <Nav.Link href="/grades">Home</Nav.Link>
+              <Nav.Link href="/messages">Messages</Nav.Link>
             </Nav>
           </Container>
         </Navbar>

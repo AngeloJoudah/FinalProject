@@ -50,7 +50,6 @@ CourseRouter.post('/',async (request,response)=>{
       }
 })
 
-
 CourseRouter.get('/:id', async (request, response) => {
   const id = request.params.id
   await connect()

@@ -5,11 +5,13 @@ import {Home} from './pages/Home/Home'
 import {CourseList} from './pages/Courses/CourseList'
 import {Container} from 'react-bootstrap'
 import {AddCourse} from "./pages/Courses/AddCourse";
-import { Login } from "./pages/Login/Login";
-import {CreateAccount} from './pages/Login/CreateAccount'
+import { Login } from "./pages/login/Login";
+import {CreateAccount} from './pages/login/CreateAccount'
 import axios from "axios";
 import { AuthProvider } from "./auth/Auth";
 import { RequireAuth } from "./components/requireAuth";
+import { Profile } from "./pages/shared/profile";
+import { Messages } from "./pages/shared/messages";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,19 +21,15 @@ const router = createBrowserRouter(
       <Route path='courses/add' element={<RequireAuth><AddCourse /></RequireAuth>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path="/signup" element={<CreateAccount/>}/>
+      <Route path="/profile" element={<Profile/>}/>
+      <Route path="/messages" element={<Messages/>}/>
     </Route>
   )
 )
 function App() {
   return (
     <AuthProvider>
-      <Container fluid>
-      <div className="App">
-        <Header/>
         <RouterProvider router={router}/>
-        <Footer />
-      </div>
-      </Container>
     </AuthProvider>
   );
 }

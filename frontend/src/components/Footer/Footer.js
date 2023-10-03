@@ -13,16 +13,7 @@ export const Footer = () =>{
       return (
         <>
         <Row className="my-2">
-        <Navbar bg="light" data-bs-theme="light">
-          <Container >
-            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#features">Features</Nav.Link>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
-            </Nav>
-          </Container>
-        </Navbar>
+          <hr color="black" className="my-5" size="4" align="center"/>
         </Row>
       </>
       );

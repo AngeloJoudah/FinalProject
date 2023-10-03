@@ -15,23 +15,29 @@ import { useState } from "react";
 
 const validate = values =>{
   const errors = {}
-  if(!!!values.name){
-    errors.name = 'This field is required'
+  if(!!!values.firstname){
+    errors.firstname = 'This field is required'
   }
-  else if(values.name.length < 2 || values.name.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.name)){
-    errors.name = 'First Names can only be between 2 and 15 characters and can only contain letters and numbers.'
+  else if(values.firstname.length < 2 || values.firstname.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.firstname)){
+    errors.firstname = 'First Names can only be between 2 and 15 characters and can only contain letters and numbers.'
   }
-  if(!!!values.lastName){
-    errors.lastName = 'This field is required'
+  if(!!!values.lastname){
+    errors.lastname = 'This field is required'
   }
-  else if(values.lastName.length < 2 || values.lastName.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.lastName)){
-    errors.lastName = 'Last Names can only be between 2 and 15 characters and can only contain letters and numbers.'
+  else if(values.lastname.length < 2 || values.lastname.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.lastname)){
+    errors.lastname = 'Last Names can only be between 2 and 15 characters and can only contain letters and numbers.'
+  }
+  if(!!!values.username){
+    errors.username = 'This field is required'
+  }
+  else if(values.username.length < 2 || values.username.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.username)){
+    errors.username = 'Usernames can only be between 2 and 15 characters and can only contain letters and numbers.'
   }
   if(!!!values.password){
     errors.password = 'This field is required'
   }
   else if(values.password.length < 2 || values.password.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.password)){
-    errors.password = 'First Names can only be between 2 and 15 characters and can only contain letters and numbers.'
+    errors.password = 'Passwords can only be between 2 and 15 characters and can only contain letters and numbers.'
   }
 
   if(!!!values.email){
@@ -64,9 +70,14 @@ export const CreateAccount = () =>{
 
     const navigate = useNavigate()
     const handleSubmit = async (values,formikBag) =>{
-    const req = await axios.post('http://finalprojectangelo.azurewebsites.net/api/v1/users',values)
+    console.log(values)
+    const req = await axios.post('http://localhost:8080/api/v1/auth/register',values,{headers:{
+      "Content-Type":"application/json"
+    }
+    })
+    console.log(req)
     if(req.status === 200){
-      navigate('/courses')
+      navigate('/login')
     }
 
 
@@ -85,49 +96,47 @@ export const CreateAccount = () =>{
       return Object.values(typeEnum).includes(value)
     }
 
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const handleDateChange = (date, setFieldValue) => {
       setSelectedDate(date); // Update the local state with the selected date
-      const formattedDate = date ? date.toLocaleDateString() : null; // Format the date or set to null if cleared
+      const formattedDate = date ? date.toLocaleDateString() : new Date(); 
       const currentDate = new Date();
       const birthDateObj = new Date(formattedDate);
-    
       // Calculate the difference in milliseconds between the current date and the birth date
       const ageInMilliseconds = currentDate - birthDateObj;
-    
       // Convert the difference into years
       const ageInYears = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
-    
       setFieldValue('age', ageInYears); // Update the Formik field value
     }
 
 
     const schema = yup.object().shape({
-      name: yup.string().required(),
-      lastName: yup.string().required(),
+      firstname: yup.string().required(),
+      lastname: yup.string().required(),
       username: yup.string().required(),
-      //age: yup.string().required(),
+      password: yup.string().required(),
       email : yup.string().required(),
       type: yup.string().test('Valid Type','Invalid Type',validType).required(),
       terms: yup.boolean(true).required(),
-      age: yup.string().required()
+      age: yup.number().integer().required()
     });
 
     return(
-      <>
+      <div className="mx-3">
       <h1>Signup for an account</h1>
         <Formik
         validationSchema={schema}
         onSubmit={handleSubmit}
         validate={validate}
         initialValues={{
-          name: '',
-          lastName: '',
+          firstname: '',
+          lastname: '',
           username: '',
+          password: '',
           email: '',
           terms: false,
           type:"",
-          age:null
+          age:0
         }}
       >
         {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => {
@@ -139,13 +148,13 @@ export const CreateAccount = () =>{
                     <Form.Label>First name</Form.Label>
                     <Form.Control
                       type="text"
-                      name="name"
-                      value={values.name}
+                      name="firstname"
+                      value={values.firstname}
                       onChange={handleChange}
-                      isValid={touched.name && !errors.name}
-                      isInvalid={!!errors.name} />
+                      isValid={touched.firstname && !errors.firstname}
+                      isInvalid={!!errors.firstname} />
                     <Form.Control.Feedback type="invalid">
-                      {errors.name}
+                      {errors.firstname}
                     </Form.Control.Feedback>
                     <Form.Control.Feedback>
                       Looks good!
@@ -157,15 +166,15 @@ export const CreateAccount = () =>{
                     <Form.Label>Last name</Form.Label>
                     <Form.Control
                       type="text"
-                      name="lastName"
-                      value={values.lastName}
+                      name="lastname"
+                      value={values.lastname}
                       onChange={handleChange}
-                      isValid={touched.lastName && !errors.lastName}
-                      isInvalid={!!errors.lastName} />
+                      isValid={touched.lastname && !errors.lastname}
+                      isInvalid={!!errors.lastname} />
 
                     <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">
-                      {errors.lastName}
+                      {errors.lastname}
                     </Form.Control.Feedback>
                   </Form.Group>
 
@@ -195,7 +204,7 @@ export const CreateAccount = () =>{
                     <Form.Label>Password</Form.Label>
                     <InputGroup hasValidation>
                       <Form.Control
-                        type="text"
+                        type="password"
                         placeholder="Password"
                         aria-describedby="inputGroupPrepend"
                         name="password"
@@ -203,6 +212,9 @@ export const CreateAccount = () =>{
                         onChange={handleChange}
                         isValid={touched.password && !errors.password}
                         isInvalid={!!errors.password} />
+                      <Form.Control.Feedback>
+                        Looks Good!
+                      </Form.Control.Feedback>
                       <Form.Control.Feedback type="invalid">
                         {errors.password}
                       </Form.Control.Feedback>
@@ -211,7 +223,7 @@ export const CreateAccount = () =>{
 
 
 
-                  <Form.Group as={Col} md="6" controlId="validationFormik02">
+                  <Form.Group as={Col} md="6" controlId="validationFormik03">
                     <Form.Label>Email</Form.Label>
 
                     <Form.Control
@@ -293,6 +305,6 @@ export const CreateAccount = () =>{
             );
           }}
       </Formik>
-      </>
+      </div>
     )
 }

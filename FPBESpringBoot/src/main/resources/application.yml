@@ -4,13 +4,13 @@ server:
     #    context-path: /fpbe
 spring:
   datasource:
-    url: ${URL}
-    username: ${USERNAME}
-    password: ${PSWD}
+    url: jdbc:postgresql://fpbepgql.postgres.database.azure.com:5432/cst
+    username: Angelo
+    password: Bella514!
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect

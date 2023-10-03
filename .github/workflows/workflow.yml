@@ -31,15 +31,8 @@ name: Build and deploy an app to AKS
 
 on:
   push:
-    branches: ["main"]
   workflow_dispatch:
 
-env:
-  AZURE_CONTAINER_REGISTRY: "your-azure-container-registry"
-  CONTAINER_NAME: "your-container-name"
-  RESOURCE_GROUP: "your-resource-group"
-  CLUSTER_NAME: "your-cluster-name"
-  DEPLOYMENT_MANIFEST_PATH: "your-deployment-manifest-path"
 
 jobs:
   buildImage:
@@ -59,10 +52,29 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Builds and pushes an image up to your Azure Container Registry
-      - name: Build and push image to ACR
+
+      - name: Login to the ACR server
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.AZURE_REGISTRY_SERVER }}
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+          
+
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} .
+         docker-compose build
+        
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/courseapi:latest \
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/micro-services-pg2mong:latest \
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpbe:latest \
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/fpfe:latest
+      #- name: Push Docker image to ACR
+      #  run: docker push ${{ secrets.AZURE_REGISTRY_SERVER }}/nginx:latest
+
 
   deploy:
     permissions:

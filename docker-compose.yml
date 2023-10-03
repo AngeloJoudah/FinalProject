@@ -21,26 +21,26 @@ services:
       dockerfile: Dockerfile
   courseapi:
    ports:
-      - "8081:80"
+      - "8081:8081"
    build:
     dockerfile: Dockerfile
     context: ./courseapi
    image: psdemoacrangelo.azurecr.io/courseapi:latest
    
-  nginx-proxy:
-   image: psdemoacrangelo.azurecr.io/nginx:latest
-   build:
-    context: ./nginx/
-    dockerfile: Dockerfile
-   ports:
-    - "80:80"
-    - "443:443"
-   volumes:
-    - WEBAPP_STORAGE_HOME:/etc/nginx/conf.d
-   depends_on:
-    - user-api
-    - front-end
-    - micro-services-pg2mongo
-    - courseapi
-volumes:
-  WEBAPP_STORAGE_HOME:
+  #nginx-proxy:
+  # image: psdemoacrangelo.azurecr.io/nginx:latest
+  # build:
+  #  context: ./nginx/
+  #  dockerfile: Dockerfile
+  # ports:
+  #  - "80:80"
+  #  - "443:443"
+ #  volumes:
+ #   - WEBAPP_STORAGE_HOME:/etc/nginx/conf.d
+  # depends_on:
+  #  - user-api
+  #  - front-end
+  #  - micro-services-pg2mongo
+  #  - courseapi
+#volumes:
+#  WEBAPP_STORAGE_HOME:

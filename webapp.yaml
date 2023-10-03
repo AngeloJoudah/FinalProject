@@ -159,8 +159,8 @@ metadata:
 spec:
   #ingressClassName: azure-application-gateway
   rules:
-#   - host: ofcourse.website
-   - http:
+   - host: ofcourse.website
+     http:
       paths:
       - path: /
         pathType: Prefix

@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
- name: finalprojectconfig
-data:
- front-end-url: webapp-service
- ingress-mapping: app-ingress

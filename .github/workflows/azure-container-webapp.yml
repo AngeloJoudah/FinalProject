@@ -1,9 +1,7 @@
 name: Deploy all moving parts of capstone
-env:
-  AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}  # set this to the name of your Azure Web App
 on:
   push:
-    branches: [ "main", "test" ]
+    #branches: [ "main", "test" ]
   workflow_dispatch:
 
 permissions:

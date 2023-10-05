@@ -1,8 +1,8 @@
 import {notification} from './index'
 import { modelUser } from './user'
 import mongoose from 'mongoose'
-//const {configDotenv} = require('dotenv')
-//configDotenv({path:'.env'})
+const {configDotenv} = require('dotenv')
+configDotenv({path:'.env'})
 
 export interface user{
     firstname:string,

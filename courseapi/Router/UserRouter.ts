@@ -29,9 +29,8 @@ UserRouter.post('/',async (request,response) =>{
     await mongoose.connection.close()
 })
 
-UserRouter.get('/:username', async (request, response) => {
+UserRouter.get('/username/:username', async (request, response) => {
     const username = request.params.username;
-  
     // Wrap the code in a try-catch block to handle potential errors
     try {
       // Establish the mongoose connection

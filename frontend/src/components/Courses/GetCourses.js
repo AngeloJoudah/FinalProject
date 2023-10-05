@@ -22,11 +22,13 @@ export const Courses = ({url}) =>{
             setIsLoading(false)
         })
     }
-    const courses = data.map(course => {
+    const courses = data ? 
+    data.map(course => {
         return(
         <Col  className='m-5 d-flex' key={course.name} lg={3} md={6} sm={12}>
             <CourseCard image={course.image} name={course.name} description={course.description}/>
-        </Col>)});
+        </Col>)}) 
+        : <></>
     return (<Container fluid>
         <Row>
         {isLoading?<SpinnerLoader/>:courses}

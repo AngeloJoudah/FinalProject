@@ -19,7 +19,7 @@ export const AddCourse = () =>{
             image:file
         }
         if(desc) await axios
-        .post('http://localhost:80/api/courses',data)
+        .post('http://localhost:8081/api/v2/courses',data)
         navigate('/courses')
         //.then(request =>{setMessage(<></>)}) 
         //: setMessage(<h3>Please fill out all form fields before submitting</h3>)

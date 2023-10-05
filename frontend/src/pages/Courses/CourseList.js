@@ -9,7 +9,7 @@ export const CourseList = () =>{
             Courses
         </Row>
         <Container className="d-flex">
-        <Courses url={'http://localhost:80/api/courses'}/>
+        <Courses url={'http://localhost:8081/api/v2/courses'}/>
         </Container>
         <Button className="m-3" href="/courses/add">Add a course</Button>
         </Container>

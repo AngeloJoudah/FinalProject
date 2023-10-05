@@ -1,21 +1,23 @@
-import { redirect } from "react-router";
-import { useState, createContext, useContext } from "react";
-import axios from "axios";
-import * as yup from 'yup';
+import { useState, createContext, useContext} from "react";
 
 const AuthContext = createContext(null)
 export const AuthProvider = ({children}) => {
-  const [user,setUser] = useState(null)
+  const [user,setUser] = useState('')
   
-  const login = (user) => {
-    setUser(user)
+  const login = ({token, newUser}) => {
+    //setToken(token)
+    localStorage.setItem('token',token)
+    localStorage.setItem('user',newUser)
+    setUser(newUser)
   }
 
   const logout = () =>{
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setUser(null)
   }
   
-  return (<AuthContext.Provider value={{user, login, logout}}>
+  return (<AuthContext.Provider value={{login, logout}}>
           {children}
           </AuthContext.Provider>
   )

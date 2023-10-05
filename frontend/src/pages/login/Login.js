@@ -1,34 +1,32 @@
 import axios from "axios";
-import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../../auth/Auth";
 import * as formik from 'formik'
 import * as yup from 'yup';
 
 
 export const Login = () =>{
-// eslint-disable-next-line
-    const [message,setMessage] = useState(<></>)
-    const navigate = useNavigate()
-    const auth = useAuth()
     const { Formik } = formik;
-
+    const auth = useAuth()
+    const nav = useNavigate()
+    const location = useLocation()
+    const redirectPath = location.state?.path ||  '/'
 
     const handleSubmit = async (values,formikBag) =>{
-        console.log(values)
         if(values.password && values.username) {
             await axios
-            .post(`http://localhost:8080/api/v1/auth/authentication`,values,
-            {headers:{
+            .post(`http://localhost:8080/api/v1/auth/authentication`,values,{headers:{
                 "Content-Type":"application/json"
             }
-            }
-            )
-            .then(e => {
+            })
+            .then(async e => {
                 if(e.status == 200){
-                    console.log(e.data)
-                    auth.login(axios.get(`http://localhost:80/api/users/${values.username}`))
+                    const token = e.data.token
+                    const user = await axios.get(`http://localhost:8081/api/v2/users/username/${values.username}`).then( async e =>{
+                    await auth.login({token:token,newUser:values.username})
+                    nav('/',{replace:true})
+                })
                 }
             }
             )
@@ -93,7 +91,6 @@ export const Login = () =>{
                         </Form.Text>
                         <Button type="submit">Submit</Button>
                     </Form>
-                    {message}
                 </div>
                 )
             }

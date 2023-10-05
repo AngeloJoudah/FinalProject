@@ -70,18 +70,14 @@ export const CreateAccount = () =>{
 
     const navigate = useNavigate()
     const handleSubmit = async (values,formikBag) =>{
-    console.log(values)
-    const req = await axios.post('http://localhost:8080/api/v1/auth/register',values,{headers:{
-      "Content-Type":"application/json"
-    }
-    })
-    console.log(req)
-    if(req.status === 200){
-      navigate('/login')
-    }
-
-
-
+      console.log(values)
+      const req = await axios.post('http://localhost:8080/api/v1/auth/register',values,{headers:{
+        "Content-Type":"application/json"
+      }
+      })
+      if(req.status === 200){
+        navigate('/login')
+      }
     }
 
     const { Formik } = formik;

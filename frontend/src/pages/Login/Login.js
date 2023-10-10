@@ -23,11 +23,10 @@ export const Login = () =>{
             .then(async e => {
                 if(e.status == 200){
                     const token = e.data.token
-                    const user = await axios.get(`http://localhost:8081/api/v2/users/username/${values.username}`).then( async e =>{
                     await auth.login({token:token,newUser:values.username})
                     nav('/',{replace:true})
-                })
                 }
+            
             }
             )
         }

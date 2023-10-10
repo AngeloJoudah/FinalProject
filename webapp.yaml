@@ -1,6 +1,57 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  name: azure-storage-secret
+type: Opaque
+data:
+  azurestorageaccountname: YWtzcGVyc2lzdGFuY2UNCg==
+  azurestorageaccountkey: NfB29wYRXRStG4MlYK4zy3ah9TKEm05e5fjlclX3a7Y74owEm0uj7T7XzRAP47TqC/orZRKcZgDb+AStHrF0Qw==
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: azure-file-pv
+  annotations:
+    pv.kubernetes.io/provisioned-by: file.csi.azure.com
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  csi:
+    driver: file.csi.azure.com
+    readOnly: false
+    volumeHandle: unique-volumeid  # make sure this volumeid is unique for every identical share in the cluster
+    volumeAttributes:
+      shareName: aksshare
+    nodeStageSecretRef:
+      name: azure-storage-secret
+      namespace: default
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=0
+    - gid=0
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-file-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-csi
+  resources:
+    requests:
+      storage: 100Gi 
+---
+apiVersion: v1
+kind: Secret
+metadata:
  name: acr-secret
 type: Opaque
 data: 
@@ -28,7 +79,92 @@ metadata:
 type: Opaque
 data:
  url: bW9uZ29kYjovL2RvY2RiZnA6T2xzNXlFNUdxdm4waWt5emNSa2NjQWE4SEM3Z3E4QVNObTMyOXNkcHVhSktFbDE1cnV1eFYyNmZqNEgzQlZhbGM0VGZPeE83V3pTR0FDRGJ0QnUxaUE9PUBkb2NkYmZwLm1vbmdvLmNvc21vcy5henVyZS5jb206MTAyNTUvP3NzbD10cnVlJnJlcGxpY2FTZXQ9Z2xvYmFsZGImcmV0cnl3cml0ZXM9ZmFsc2UmbWF4SWRsZVRpbWVNUz0xMjAwMDAmYXBwTmFtZT1AZG9jZGJmcEA=
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-service
+spec:
+  selector:
+    app: zookeeper
+  ports:
+    - name: client
+      protocol: TCP
+      port: 2181
+      targetPort: 2181
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  serviceName: zookeeper-service
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: confluentinc/cp-zookeeper:latest
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+          ports:
+            - containerPort: 2181
+          volumeMounts:
+            - name: azure-file-volume
+              mountPath: /var/lib/zookeeper/data
+      volumes:
+      - name: azure-file-volume
+        persistentVolumeClaim:
+          claimName: azure-file-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+spec:
+  selector:
+    app: kafka
+  ports:
+    - name: kafka
+      protocol: TCP
+      port: 9092
+      targetPort: 9092
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+spec:
+  serviceName: kafka-service
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka
+          image: confluentinc/cp-kafka:latest
+          ports:
+            - containerPort: 9092
+          env:
+            - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
+              value: "true"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper-service:2181
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://kafka-service.default.svc.cluster.local:9092
+            
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -53,7 +189,6 @@ spec:
       - containerPort: 80
         protocol: TCP
         name: http
-
     - name: course-api
       image: psdemoacrangelo.azurecr.io/courseapi:latest
       env:
@@ -64,6 +199,14 @@ spec:
             key: url
       ports:
       - containerPort: 8081
+
+    - name: kafka
+      image: psdemoacrangelo.azurecr.io/kafka:latest
+      env:
+      - name: KAFKA_SERVER
+        value: kafka-service.default.svc.cluster.local:9092
+      ports:
+      - containerPort: 8082
 
     - name: user-api
       image: psdemoacrangelo.azurecr.io/fpbe:latest
@@ -118,7 +261,7 @@ spec:
           secretKeyRef:
             name: postgresql-params
             key: database
-      
+
     imagePullSecrets:
     - name: acr-secret
 ---
@@ -149,6 +292,11 @@ spec:
      protocol: TCP
      port: 8081
      targetPort: 8081
+   - name: api-v3
+     protocol: TCP
+     port: 8082
+     targetPort: 8082
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -183,3 +331,10 @@ spec:
             name: webapp-service
             port: 
               number: 8081
+      - path: /api/v3/*
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port: 
+              number: 8082

@@ -26,7 +26,14 @@ services:
     dockerfile: Dockerfile
     context: ./courseapi
    image: psdemoacrangelo.azurecr.io/courseapi:latest
-   
+  kafka:
+   ports:
+     - "9092:9092"
+   build:
+     context: ./kafka/
+     dockerfile: Dockerfile
+   image: psdemoacrangelo.azurecr.io/kafka:latest
+
   #nginx-proxy:
   # image: psdemoacrangelo.azurecr.io/nginx:latest
   # build:

@@ -9,7 +9,7 @@ export const Home = () =>{
         <Template>
         <Row className="Home">
          <h1>
-              Welcome, User!
+              Welcome, {localStorage.get("username")}!
          </h1>
         </Row>
         <Row>

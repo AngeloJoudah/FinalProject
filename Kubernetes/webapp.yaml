@@ -8,6 +8,7 @@ data:
     auto.create.topics.enable=true
     default.replication.factor=1
     spring.kafka.consumer.auto-offset-reset=earliest
+    spring.kafka.consumer.group-id=my-group
 
 ---
 apiVersion: v1

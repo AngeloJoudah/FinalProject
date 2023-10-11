@@ -1,6 +1,7 @@
 package com.example.kafka;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +19,12 @@ public class MessageController {
 	@PostMapping("/post")
 	public ResponseEntity<String> publish(@RequestBody MessageRequest req) {
 		kafkaTemplate.send("messages",req.key(),req.message());
+
 	}
+	@KafkaListener(topics = "messages")
 	@GetMapping("/get")
 	public ResponseEntity<String> getMessages(@RequestBody MessageRequest req){
-		kafkaTemplate.receive()
+		kafkaTemplate.receive("messages",req.key());
 	}
 
 

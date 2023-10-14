@@ -118,6 +118,8 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
+      - name: apply strimzi config
+        run: kubectl apply -f 'https://strimzi.io/install/latest?namespace=default' -n default
       # Deploys application based on given manifest file
       - name: Deploys application
         uses: Azure/k8s-deploy@v4

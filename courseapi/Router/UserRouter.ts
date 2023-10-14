@@ -8,7 +8,6 @@ const UserRouter = express.Router();
 UserRouter.post('/',async (request,response) =>{
     const body = request.body
     await connect()
-    console.log(body)
     if(!body.username && !body.firstName && !body.lastName){ 
         response.status(404).json('Invalid Request Body')
     }
@@ -17,7 +16,8 @@ UserRouter.post('/',async (request,response) =>{
             firstName:body.firstName,
             lastName:body.lastName,
             username:body.username,
-            courses:body.courses
+            courses:body.courses,
+            chats:body.chats
         })
         await newUser.save().then(async user => {
             response.json(user)

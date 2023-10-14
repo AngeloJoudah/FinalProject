@@ -1,13 +1,16 @@
 GET http://localhost:80/api/courses/64b53d143ceea7038b0cfa66
 
 ###
-POST http://localhost:80/api/courses HTTP/1.1
+POST http://localhost:8081/api/v2/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "description": "Wed, 21 Oct 2015 18:27:50 GMT",
-    "image":"image"
+    "_id": "64caac7be85534e74c910ecb",
+    "username":"Seymore Butts",
+    "firstName": "Angieroo",
+    "lastName": "Jowduh",
+    "courses": [],
+    "chats": []
 }
 
 ###
@@ -47,10 +50,29 @@ Content-Type: application/json
 }
 
 ###
-POST https://localhost:8082/api/v3/messages HTTP/1.1
+POST http://localhost:8082/api/v3/messages/post HTTP/1.1
 Content-Type: application/json
 
 {
     "message":"hi",
-    "key":"ange-"
+    "topic":"angelo"
+}
+
+###
+
+POST http://localhost:8081/api/v2/chats
+Content-Type: application/json
+
+{
+    "username":"notange3",
+    "other":"ange"
+}
+
+###
+GET http://localhost:8082/api/v3/messages/get?topic=angelo&offset=0 HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+
 }

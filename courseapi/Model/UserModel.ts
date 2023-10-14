@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
     courses:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
+    }],
+    chats:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chats'
     }]
 })
 

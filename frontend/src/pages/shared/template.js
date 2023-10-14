@@ -5,7 +5,7 @@ import React from 'react'
 
 export const Template = ({children}) => {
   return (
-    <div className="container-fluid">
+    <div className="">
             <Header/>
             <SettingsAndProfile/>
             {children}

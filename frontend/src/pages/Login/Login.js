@@ -16,7 +16,7 @@ export const Login = () =>{
     const handleSubmit = async (values,formikBag) =>{
         if(values.password && values.username) {
             await axios
-            .post(`http://localhost:8080/api/v1/auth/authentication`,values,{headers:{
+            .post(`https://localhost:8080/api/v1/auth/authentication`,values,{headers:{
                 "Content-Type":"application/json"
             }
             })
@@ -24,6 +24,10 @@ export const Login = () =>{
                 if(e.status == 200){
                     const token = e.data.token
                     await auth.login({token:token,newUser:values.username})
+                    const getId = await axios.get(`https://localhost:8081/api/v2/users/username/${values.username}`).catch(err=>{
+                        console.error(err)
+                    })
+                    localStorage.setItem("_id",getId.data._id)
                     nav('/',{replace:true})
                 }
             
@@ -95,6 +99,7 @@ export const Login = () =>{
             }
         }
         </Formik>
+        <a href="/signup"> Don't have an account yet? Create one!</a>
         </div>
     )
 }

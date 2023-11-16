@@ -1,17 +1,18 @@
 import React from "react";
 import { Courses } from "../../components/Courses/GetCourses";
-import { Row, Container, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
+import { Template } from "../shared/template";
 
 export const CourseList = () =>{
     return(
-        <Container >
-        <Row>
+        <Template>
+        <h1>
             Courses
-        </Row>
+        </h1>
         <Container className="d-flex">
-        <Courses url={'http://localhost:8081/api/v2/courses'}/>
+        <Courses/>
         </Container>
         <Button className="m-3" href="/courses/add">Add a course</Button>
-        </Container>
+        </Template>
     );
 }

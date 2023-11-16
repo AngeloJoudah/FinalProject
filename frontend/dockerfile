@@ -9,4 +9,4 @@ WORKDIR /app/
 COPY --from=build /app/build /app/build
 EXPOSE 80
 RUN npm i serve
-CMD npx serve -p 80 -s build
+CMD npx serve -p 443 -s build

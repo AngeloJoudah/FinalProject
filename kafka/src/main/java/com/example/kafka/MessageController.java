@@ -28,10 +28,23 @@ public class MessageController {
 	}
 
 	@GetMapping("/get")
-	public ResponseEntity<List<String>> getMessages(@RequestParam MessageConsumeRequest req){
-		List<String> records = kafkaConsumerService.consumeKafkaRecords(req.getTopic(),req.getOffset());
+	public ResponseEntity<List<String>> getMessages(@RequestParam("topic") String topic, @RequestParam("offset") Long offset){
+		List<String> records = kafkaConsumerService.consumeKafkaRecordsOffset(topic,offset);
         return ResponseEntity.ok(records);		
 	}
+	@GetMapping("/getBase")
+	public ResponseEntity<KafkaConsumerResponse> getMessagesBase(@RequestParam("topic") String topic){
+		KafkaConsumerResponse records = kafkaConsumerService.consumeKafkaRecordsBase(topic);
+		if(records.getMessages().size() == 0) {
+			return new ResponseEntity<KafkaConsumerResponse>(records, HttpStatus.OK);	
+		}
+        return new ResponseEntity<KafkaConsumerResponse>(records, HttpStatus.OK);	
+	}
+	@GetMapping("/getOffset")
+	public ResponseEntity<Long> getOffset(@RequestParam("topic") String topic){
+		return new ResponseEntity<Long>(kafkaConsumerService.getOffset(topic), HttpStatus.OK);
+	}
+
 
 
 	

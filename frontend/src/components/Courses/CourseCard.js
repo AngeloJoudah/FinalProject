@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card'
 import {Button } from 'react-bootstrap'
 
-export const CourseCard = ({image, name, description}) =>{
+export const CourseCard = ({image, name, description, courseId}) =>{
     return(
         <Card className='flex-shrink-1' >
         <Card.Img variant="top" src={image} />
@@ -12,7 +12,7 @@ export const CourseCard = ({image, name, description}) =>{
           <Card.Text>
             {description}
           </Card.Text>
-          <Button variant="primary">Visit</Button>
+          <Button variant="primary" href={`/course/${courseId}`}>Visit</Button>
         </Card.Body>
       </Card>
     );

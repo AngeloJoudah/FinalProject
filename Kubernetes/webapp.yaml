@@ -71,6 +71,7 @@ data:
  username: QW5nZWxv
  password: QmVsbGE1MTQh
  database: Y3N0
+ CERT_PASSWORD: QmVsbGE1MTQhDQoNCg==
 ---
 apiVersion: v1
 kind: Secret
@@ -144,9 +145,12 @@ spec:
     - name: frontend
       image: psdemoacrangelo.azurecr.io/fpfe:latest
       ports:
-      - containerPort: 80
+      - containerPort: 443
         protocol: TCP
         name: http
+      env:
+      - name: HTTPS
+        value: "true"
     - name: course-api
       image: psdemoacrangelo.azurecr.io/courseapi:latest
       env:
@@ -184,6 +188,11 @@ spec:
          secretKeyRef:
           name: postgresql-params
           key: password
+      - name: CERT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: CERT_PASSWORD
       ports:
       - containerPort: 8080
     - name: micro-services-pg2mongo
@@ -237,8 +246,8 @@ spec:
  ports:
    - name: http
      protocol: TCP
-     port: 80
-     targetPort: 80
+     port: 443
+     targetPort: 443
    - name: api-v1
      protocol: TCP
      port: 8080
@@ -257,13 +266,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: app-ingress
-  #annotations:
-  #  kubernetes.io/ingress.class: azure/application-gateway
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
 spec:
-  #ingressClassName: azure-application-gateway
+  ingressClassName: azure-application-gateway
+  tls:
+    - hosts:
+        - ofcourse.website
   rules:
-   #- host: ofcourse.website
-   - http:
+   - host: ofcourse.website
+     http:
       paths:
       - path: /
         pathType: Prefix
@@ -271,7 +283,7 @@ spec:
           service:
             name: webapp-service
             port:
-              number: 80
+              number: 443
       - path: /api/v1/*
         pathType: Prefix
         backend:

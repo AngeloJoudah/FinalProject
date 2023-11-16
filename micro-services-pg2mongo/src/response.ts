@@ -7,23 +7,24 @@ configDotenv({path:'.env'})
 export interface user{
     firstname:string,
     lastname:string,
-    username:string
+    username:string,
+    userType:string
 }
 
 export const response = async(notif:notification) =>{
     console.log(notif)
     await mongoconnect()
     if(notif.operation === 'CREATE'){
-        const {username,firstname,lastname} = notif.data
-        const newU:user = {username,firstname,lastname}
+        const {username,firstname,lastname,userType} = notif.data
+        const newU:user = {username,firstname,lastname,userType}
         const newUser = new modelUser(newU)
         await newUser.save().then(e =>{
             e
         })
     }
     else if(notif.operation === 'UPDATE'){
-        const {username,firstname,lastname} = notif.data
-        const newU:user = {username,firstname,lastname}
+        const {username,firstname,lastname,userType} = notif.data
+        const newU:user = {username,firstname,lastname,userType}
         await modelUser.findOneAndUpdate({username:notif.data.username},newU)
     }
     else if(notif.operation === 'DELETE'){

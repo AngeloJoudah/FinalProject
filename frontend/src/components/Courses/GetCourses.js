@@ -4,16 +4,16 @@ import axios from 'axios'
 import { SpinnerLoader } from '../misc/Spinner.js'
 import {CourseCard} from './CourseCard.js'
 
-export const Courses = ({url}) =>{
+export const Courses = () =>{
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         response()
       }, []);
     const response = async() => {
-        await axios.get(url)
+        await axios.get(`https://localhost:8081/api/v2/users/${localStorage.getItem('_id')}/courses`)
         .then(response =>{
-            setData(response.data)
+            setData(response.data.courses)
             setIsLoading(false)
         })
         .catch(err=>{
@@ -23,12 +23,10 @@ export const Courses = ({url}) =>{
         })
     }
     const courses = data ? 
-    data.map(course => {
-        return(
+    data.map(course => { return (
         <Col  className='m-5 d-flex' key={course.name} lg={3} md={6} sm={12}>
-            <CourseCard image={course.image} name={course.name} description={course.description}/>
-        </Col>)}) 
-        : <></>
+            <CourseCard image={course.image} name={course.name} description={course.description} courseId={course._id}/>
+        </Col>)}) : <></>
     return (<Container fluid>
         <Row>
         {isLoading?<SpinnerLoader/>:courses}

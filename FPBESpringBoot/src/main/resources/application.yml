@@ -2,11 +2,15 @@ server:
   port: 8080
     #  servlet:
     #    context-path: /fpbe
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:certificate.p12
+    key-store-password: Bella514!
 spring:
   datasource:
-    url: jdbc:postgresql://fpbepgql.postgres.database.azure.com:5432/cst
-    username: Angelo
-    password: Bella514!
+    url: ${URL}
+    username: ${USERNAME}
+    password: ${PSWD}
   jpa:
     show-sql: true
     hibernate:

@@ -273,6 +273,7 @@ spec:
   tls:
     - hosts:
         - ofcourse.website
+      secretName: secret-tls
   rules:
    - host: ofcourse.website
      http:

@@ -7,6 +7,7 @@ RUN npm run build
 FROM node:alpine
 WORKDIR /app/
 COPY --from=build /app/build /app/build
+COPY --from=build /app/src/certs/cert-vault-fp-ofcourse-secure42cd9f29-8da8-4a3f-8ed7-5d88730eaf38-20231117.pfx /app/certs
 EXPOSE 80
 RUN npm i serve
-CMD npx serve -p 443 -s build --ssl-cert /app/build/certs/cert-vault-fp-ofcourse-secure42cd9f29-8da8-4a3f-8ed7-5d88730eaf38-20231117.pfx
+CMD npx serve -p 443 -s build --ssl-cert /app/certs/cert-vault-fp-ofcourse-secure42cd9f29-8da8-4a3f-8ed7-5d88730eaf38-20231117.pfx

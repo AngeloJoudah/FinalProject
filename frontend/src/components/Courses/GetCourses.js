@@ -22,9 +22,13 @@ export const Courses = () =>{
             setIsLoading(false)
         })
     }
+    const [isHovered,setIsHovered] = useState(false)
+    const setHovered = () =>{
+        setIsHovered(!isHovered)
+    }
     const courses = data ? 
     data.map(course => { return (
-        <Col  className='m-5 d-flex' key={course.name} lg={3} md={6} sm={12}>
+        <Col onMouseEnter={setHovered} onMouseLeave={setHovered}  className={`m-5 ${isHovered ? `` : `d-flex`}`} key={course.name} lg={3} md={6} sm={12}>
             <CourseCard image={course.image} name={course.name} description={course.description} courseId={course._id}/>
         </Col>)}) : <></>
     return (<Container fluid>

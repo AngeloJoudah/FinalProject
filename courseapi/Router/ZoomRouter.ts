@@ -5,17 +5,17 @@ const ZoomRouter = express.Router();
 const querystring = require('querystring')
 ZoomRouter.post('/CreateMeetingToken', async (request, response) => {
     try {
-        const iat = Math.round(new Date().getTime() / 1000);
+        const iat = Math.round((new Date().getTime()- 30000) / 1000) - 30;
         const exp = iat + 60 * 60 * 2;
 
-        const oHeader = { alg: 'HS256', typ: 'JWT' };
+        const oHeader = { alg: "HS256", typ: "JWT" };
         const sHeader = JSON.stringify(oHeader);
-
+        console.log('mn :' + request.body.mn)
         const oPayload = {
-            appKey: process.env.ZOOM_SDK_CLIENT_ID,
+            appKey: process.env.ZOOM_SDK_CLIENT_ID, // Use Zoom API Key
             sdkKey: process.env.ZOOM_SDK_CLIENT_ID,
             meetingNumber: request.body.mn,
-            role: 1,
+            role: 1, // 1 for host, 0 for participant
             iat: iat,
             exp: exp,
             tokenExp: exp,
@@ -24,8 +24,8 @@ ZoomRouter.post('/CreateMeetingToken', async (request, response) => {
         const sPayload = JSON.stringify(oPayload);
 
         // Sign the JWT
-        const sdkJWT = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, process.env.ZOOM_SDK_CLIENT_SECRET);
-
+        const sdkJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, process.env.ZOOM_SDK_CLIENT_SECRET);
+        console.log('Token '+ sdkJWT)
         return response.status(200).json(sdkJWT);
     } catch (err) {
         console.log(err);
@@ -35,7 +35,7 @@ ZoomRouter.post('/CreateMeetingToken', async (request, response) => {
 
 ZoomRouter.post('/JoinMeetingToken',async(request,response)=>{
     try{
-        const iat = Math.round(new Date().getTime() / 1000) - 30
+        const iat = Math.round((new Date().getTime() - 30000) / 1000)
         const exp = iat + 60 * 60 * 2
         const oHeader = { alg: 'HS256', typ: 'JWT' }
         const sHeader = JSON.stringify(oHeader)
@@ -87,7 +87,6 @@ ZoomRouter.post('/access', async (request, response) => {
 
         const accessToken = (await axios.post('https://zoom.us/oauth/token', formData, config)).data.access_token;
         console.log(`Bearer ${accessToken}`)
-        const zakToken = await axios.get('https://api.zoom.us/v2/users/me/token?type=zak',{headers:{Authorization:'Bearer ' + accessToken}})
         let working = false
         let tryCounter = 0
         let meeting = null
@@ -98,7 +97,12 @@ ZoomRouter.post('/access', async (request, response) => {
         while(!working && tryCounter <= 2){
             try{
 
-                meeting = await axios.post('https://api.zoom.us/v2/users/me/meetings',{},{
+                meeting = await axios.post('https://api.zoom.us/v2/users/me/meetings',{
+                    "duration": 30,
+                    settings: {
+                        join_before_host: true
+                    }
+                },{
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },
@@ -111,8 +115,12 @@ ZoomRouter.post('/access', async (request, response) => {
                 await pause(10000);
             }
         }
-        console.log(meeting?.data)
-        return response.status(200).json({zak:zakToken.data.token,mn:meeting?.data.id,password:meeting?.data.password,email:meeting?.data.host_email});
+        const zakToken = await (await axios.get('https://api.zoom.us/v2/users/me/token?type=zak',{headers:{Authorization:'Bearer ' + accessToken}})).data.token
+        //console.log(meeting?.data)
+        //const urlObject = new URL(meeting?.data.start_url);
+        //const zakToken = urlObject.searchParams.get('zak');
+        console.log(zakToken)
+        return response.status(200).json({zak:zakToken.data,mn:meeting?.data.id,password:meeting?.data.password,email:meeting?.data.host_email,tk:meeting?.data.join_url});
     } catch (err) {
         console.log(err)
         return response.status(500).json({ error: 'Internal server error' });

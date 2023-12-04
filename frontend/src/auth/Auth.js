@@ -3,7 +3,6 @@ import { useState, createContext, useContext} from "react";
 const AuthContext = createContext(null)
 export const AuthProvider = ({children}) => {
   const [user,setUser] = useState('')
-  
   const login = ({token, newUser}) => {
     //setToken(token)
     localStorage.setItem('token',token)
@@ -14,6 +13,7 @@ export const AuthProvider = ({children}) => {
   const logout = () =>{
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('_id')
     setUser(null)
   }
   

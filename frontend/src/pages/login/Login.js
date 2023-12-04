@@ -23,11 +23,14 @@ export const Login = () =>{
             .then(async e => {
                 if(e.status == 200){
                     const token = e.data.token
+                    document.cookie = `${'token'}=${encodeURIComponent(token)}; expires=${Date.now() + 30 * 1000 * 60}; path=/`
+                    console.log(document.cookie)
                     await auth.login({token:token,newUser:values.username})
                     const getId = await axios.get(`https://localhost:8081/api/v2/users/username/${values.username}`).catch(err=>{
                         console.error(err)
                     })
                     localStorage.setItem("_id",getId.data._id)
+                    localStorage.setItem("type",getId.data.userType)
                     nav('/',{replace:true})
                 }
             

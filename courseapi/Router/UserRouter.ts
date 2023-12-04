@@ -14,6 +14,34 @@ UserRouter.get('/:id/courses',async(request,response)=>{
   }
 })
 
+UserRouter.get('/id/:id/student/:studentId', async (request, response) => {
+  const { id, studentId } = request.params;
+  console.log(id, studentId);
+
+  if (!id || !studentId) {
+    return response.status(404).json({ error: "Invalid request body." });
+  }
+
+  try {
+    const user = await modelUser.findById(id);
+
+    if (user) {
+      const foundStudent = user.students?.find(student => student._id.toString() === studentId);
+
+      if (foundStudent) {
+        response.status(200).json(foundStudent);
+      } else {
+        response.status(404).json('Student not found');
+      }
+    } else {
+      response.status(404).json('User not found');
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(500).json('Internal server error');
+  }
+});
+
 UserRouter.post('/',async (request,response) =>{
     const body = request.body
     if(!body.username && !body.firstName && !body.lastName){ 
@@ -34,6 +62,50 @@ UserRouter.post('/',async (request,response) =>{
             response.status(400).json({ error:error })
           });
     } 
+})
+
+UserRouter.get('/id/:id',async(request,response)=>{
+  const id = request.params.id
+  if(!id){
+    return response.status(400).json({error:"Invalid request body."})
+  }
+  try{
+    const user = await modelUser.findById(id)
+    if(!user){
+      return response.status(404).json({error:"User with id specified does not exist"})
+    }
+    response.status(200).json(user)
+  }catch(error){
+    console.log(error)
+    response.status(500).json({error:"Internal server error."})
+  }
+})
+
+
+UserRouter.put('/description',async(request,response)=>{
+  const {_id, text} = request.body
+  if(!_id || !text){
+    return response.status(400).json({error:"Invalid request body."})
+  }
+  if(text.length > 400){
+    return response.status(400).json({error:"Description is too long. Must be 400 characters or less."})
+  }
+  try{
+    await modelUser.findOneAndUpdate(
+      {
+      _id:_id
+      },
+      {
+        $set: {
+          description: text
+        }
+      }
+    )
+    response.status(200).json({message:'Update successful.'})
+  }catch(error){
+    console.log(error)
+    response.status(500).json({error:"Internal server error."})
+  }
 })
 
 UserRouter.post('/image', async (request, response) => {
@@ -76,15 +148,18 @@ UserRouter.get('/username/:username', async (request, response) => {
   
 UserRouter.get('/search/:username',async(request,response)=>{
   const username = request.params.username
+  console.log(username)
+  console.log("hi")
   if(!username){
-    response.status(404);
+    response.status(404).json({error:'missing user'});
   }else{
     try{
       const users = await modelUser.find({ username: { $regex: new RegExp(username,"i") } })
-      if(users.length < 0){
+      if(users.length < 1){
         response.status(404).json({error:"no user found matching this username"});
       }else{
-        response.status(200).json(users)
+        const data = users.map(user => {return {username:user.username,profilePicture:user.profilePicture,_id:user._id,email:user.email}})
+        response.status(200).json(data.slice(0,5))
       }
 
     }

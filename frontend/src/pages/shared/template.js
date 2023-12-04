@@ -10,7 +10,7 @@ import React from 'react'
 
 
 
-export const Template = ({children}) => {
+export const Template = ({children, style}) => {
 
   const [image,setImage] = useState(null)
   const [isLoading,setIsLoading] = useState(true)
@@ -31,7 +31,7 @@ export const Template = ({children}) => {
   return (
     <div className="container-fluid">
             <Header/>
-            <div className="background" style={{backgroundImage:'url(\'/images/logo.jpg\')',backgroundSize:'cover',filter:'contrast(125%)'}}>
+            <div className="background" style={style ? style : {backgroundImage:'url(\'/images/logo.jpg\')',backgroundSize:'cover',filter:'contrast(125%)'}}>
             { isLoading ? <SpinnerLoader style={{height:"300px"}}/> :
             <>
               <SettingsAndProfile image={image}/>

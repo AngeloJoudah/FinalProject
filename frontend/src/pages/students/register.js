@@ -3,6 +3,8 @@ import { Template } from '../shared/template'
 import { Button, Form, Image } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
+import { useAuth } from '../../auth/Auth'
+import { useNavigate } from 'react-router'
 export const Register = () => {
     const [course,setCourse] = useState(null)
     const [showModal,setShowModal] = useState(false)
@@ -11,6 +13,8 @@ export const Register = () => {
     const [regError,setRegError] = useState(false)
     const [success,setSuccess] = useState(false)
     const id = localStorage.getItem('_id')
+    const auth = useAuth()
+    const nav = useNavigate()
     const find = async (event) =>{
         event.preventDefault()
         const code = event.target[0].value
@@ -23,17 +27,23 @@ export const Register = () => {
             setShowModal(true)
         }catch(error){
             setErr(true)
-            console.log(error)
         }
     }
     const register = async() =>{
       try{
-        await axios.put(`https://localhost:8081/api/v2/courses/enroll`,{code:code,id:localStorage.getItem('_id')})
+        await axios.put(`https://localhost:8081/api/v2/courses/enroll`,{code:code,id:localStorage.getItem('_id')}, { withCredentials: true })
         setRegError(false)
         setShowModal(false)
         setSuccess(true)
-      }catch{
+      }catch(error){
         setRegError(true)
+        console.log(error.request.status)
+        if(error.request?.status === 401){
+          await auth.logout();
+          alert('Your session has expired, you will be logged out now.')
+          nav('/login')
+          
+        }
       }
     }
 

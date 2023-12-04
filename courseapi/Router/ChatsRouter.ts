@@ -36,7 +36,7 @@ ChatsRouter.post('/', async (request, response) => {
       response.status(200).json(newChat);
   }
     else{
-      response.status(200).json({message:'chat already exists'})
+      response.status(200).json(exists)
     }
   } catch (error) {
     console.error(error);

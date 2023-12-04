@@ -36,14 +36,14 @@ const validate = values =>{
   if(!!!values.password){
     errors.password = 'This field is required'
   }
-  else if(values.password.length < 2 || values.password.length > 15 || !/^[a-zA-Z0-9]+$/.test(values.password)){
-    errors.password = 'Passwords can only be between 2 and 15 characters and can only contain letters and numbers.'
+  else if(values.password.length < 2 || values.password.length > 15 || !/^[a-zA-Z0-9!#$]+$/.test(values.password)){
+    errors.password = 'Passwords can only be between 2 and 15 characters and can only contain letters and numbers and special characters such as (!,#,$).'
   }
 
   if(!!!values.email){
     errors.email = 'This field is required'
   }
-  else if(values.email.length < 6 || values.email.length > 30 || !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}$/.test(values.email)){
+  else if(values.email.length < 6 || values.email.length > 30 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)){
     errors.email = 'Please provide a valid email address'
   }
   if(!values.terms){

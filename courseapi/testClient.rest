@@ -1,0 +1,28 @@
+POST https://localhost:8081/api/v2/complements/original HTTP/1.1
+Content-Type: application/json
+
+
+{
+    "file":"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGNsYXNzPSJpb25pY29uIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZD0iTTI1NiA0NDhhMzIgMzIgMCAwMS0xOC01LjU3Yy03OC41OS01My4zNS0xMTIuNjItODkuOTMtMTMxLjM5LTExMi44LTQwLTQ4Ljc1LTU5LjE1LTk4LjgtNTguNjEtMTUzQzQ4LjYzIDExNC41MiA5OC40NiA2NCAxNTkuMDggNjRjNDQuMDggMCA3NC42MSAyNC44MyA5Mi4zOSA0NS41MWE2IDYgMCAwMDkuMDYgMEMyNzguMzEgODguODEgMzA4Ljg0IDY0IDM1Mi45MiA2NGM2MC42MiAwIDExMC40NSA1MC41MiAxMTEuMDggMTEyLjY0LjU0IDU0LjIxLTE4LjYzIDEwNC4yNi01OC42MSAxNTMtMTguNzcgMjIuODctNTIuOCA1OS40NS0xMzEuMzkgMTEyLjhhMzIgMzIgMCAwMS0xOCA1LjU2eiIvPjwvc3ZnPg==",
+    "fileName":"star"
+}
+
+###
+
+DELETE https://localhost:8081/api/v2/complements/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId":"65316366cd223f1a5f982622",
+    "complementsId":"655f8f71d2db9dc9be3601a7"
+}
+
+###
+PUT https://localhost:8081/api/v2/complements/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "giverId":"65316366cd223f1a5f982622",
+    "complementId":"655fd426b64900b2a240ec03",
+    "receiverId":"653163b4cd223f1a5f982624"
+}

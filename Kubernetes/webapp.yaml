@@ -72,6 +72,8 @@ data:
  password: QmVsbGE1MTQh
  database: Y3N0
  CERT_PASSWORD: QmVsbGE1MTQhDQoNCg==
+ SECRET_KEY: SGQ2UUNZZElBWDlVZUxCek9QdlBYQS9HdXdDcXVzNkFWZnNTdjZTOGJhOUlvcCtmSW9xUmQyTTVHWWpDNlJHQWRPR0ZSMWdCSDRHTFMzZFUyNEhva1NvWDNWdnZIaDlQbHI3aFkvV01GL0V1MmZDbWRrZTRWTUdTeko0bThmSGxDMi9xNVpQU2NQZnBLK1c4aWpLV2JJVlA4STRVQmsvWHE5SmN1U0VPb3VwZWJ4NVpEZzBNRElhUEl1LzNjazkySitNZitKc01KeksrQjd6MzFxWGpxN0x1enl1RjE4QmdOZWlocnp1K2NBMk5aN2k5dTFJa1JCZlQrUWRNbWdQbGt6M3RtTEFCMlpWS0NGbnc5RmRnNjlnbzNyaUtlNERXejd6bUUxeXovQ3VjZkhUVU8zcFh5am8wSXlacURtbkRjcWxyZml0U2UzMk1lZFA1OFBJNG1GYVJFK0c5ODIvOXcvRko5MkkwRys0
+
 ---
 apiVersion: v1
 kind: Secret
@@ -96,7 +98,7 @@ metadata:
   name: my-cluster
 spec:
   kafka:
-    version: 3.4.0
+    version: 3.6.0
     replicas: 3
     listeners:
       - name: plain
@@ -159,6 +161,11 @@ spec:
           secretKeyRef:
             name: mongo-params
             key: url
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: SECRET_KEY
       ports:
       - containerPort: 8081
 
@@ -166,7 +173,7 @@ spec:
       image: psdemoacrangelo.azurecr.io/kafka:latest
       env:
       - name: KAFKA_SERVER
-        value: my-cluster-kafka-bootstrap.default.svc.cluster.local:9092
+        value: my-cluster-kafka-bootstrap.default.svc.cluster.local:9093
       ports:
       - containerPort: 8082
 
@@ -268,12 +275,14 @@ metadata:
   name: app-ingress
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/backend-protocol: "https"
 spec:
   ingressClassName: azure-application-gateway
   tls:
     - hosts:
         - ofcourse.website
-      secretName: secret-tls
+      secretName: tls-secret
   rules:
    - host: ofcourse.website
      http:

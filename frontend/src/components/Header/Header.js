@@ -1,9 +1,9 @@
 import React from "react";
 import Navbar from 'react-bootstrap/Navbar'
-import { NavDropdown, Nav } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { Container } from "react-bootstrap";
-import { Row , Col} from "react-bootstrap";
-//import './Header.css'
+import { Row } from "react-bootstrap";
+
 export const Header = () =>{
 
     return(
@@ -17,6 +17,7 @@ export const Header = () =>{
               <Nav.Link href="/courses">Courses</Nav.Link>
               <Nav.Link href="/zoom">Zoom</Nav.Link>
               <Nav.Link href="/chats">Chats</Nav.Link>
+              {localStorage.getItem('type')==='STUDENT' ? <Nav.Link href="/register">Register</Nav.Link> : null}
             </Nav>
           </Container>
         </Navbar>

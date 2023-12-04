@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
     lastName:String,
     username:String,
     profilePicture:String,
+    description:String,
+    postgresId:Number,
     courses:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
@@ -15,7 +17,31 @@ const userSchema = new mongoose.Schema({
     }],
     userType:{
         type:String,
-        enum: ['Instructor','Student'],
+        enum: ['TEACHER','STUDENT'],
+        required:true
+    },
+    complementsGiven:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Complements',
+        required:false
+    }],
+    awardsGiven:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Awards',
+        required:false
+    }],
+    complementsReceived:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Awards',
+        required:false
+    }],
+    students:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Chats',
+        required:false
+    },
+    email:{
+        type:String,
         required:true
     }
 })

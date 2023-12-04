@@ -35,7 +35,8 @@ export const Admit = () => {
             setCourseName(request.data.name)
             setUsers(request.data.enrolling)
         }catch(err){
-            err.response.status === 404 
+            console.log(err)
+            err.response?.status === 404 
             ? setNotFound(true)
             : setErr(true)
         }

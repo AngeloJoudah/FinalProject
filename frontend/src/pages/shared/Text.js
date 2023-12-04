@@ -92,7 +92,7 @@ export const Text = () => {
   }, [offset]);
 
   const onSubmitHandler = async event =>{
-    event.preventDefault()
+    await event.preventDefault()
     const mes = localStorage.getItem('user') + ': ' + event.target[0].value
     await axios.post(`https://localhost:8082/api/v3/messages/post`,{message:mes,topic:chatId},{headers:{"Content-Type":"application/json"}}).then(()=>{
       setMessages([...messages,mes]);

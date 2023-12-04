@@ -5,26 +5,27 @@ const {configDotenv} = require('dotenv')
 configDotenv({path:'.env'})
 
 export interface user{
-    firstname:string,
-    lastname:string,
-    username:string,
-    userType:string
+    firstname:String,
+    lastname:String,
+    username:String,
+    userType:String,
+    postgresId:Number,
+    email:String
 }
 
 export const response = async(notif:notification) =>{
-    console.log(notif)
     await mongoconnect()
     if(notif.operation === 'CREATE'){
-        const {username,firstname,lastname,userType} = notif.data
-        const newU:user = {username,firstname,lastname,userType}
+        const {username,name,last_name,_id,type,email} = notif.data
+        const newU:user = {username:username,firstname:name,lastname:last_name,userType:type,postgresId:_id,email:email}
         const newUser = new modelUser(newU)
         await newUser.save().then(e =>{
-            e
+            console.log(e)
         })
     }
     else if(notif.operation === 'UPDATE'){
-        const {username,firstname,lastname,userType} = notif.data
-        const newU:user = {username,firstname,lastname,userType}
+        const {username,name,last_name,_id,type,email} = notif.data
+        const newU:user = {username:username,firstname:name,lastname:last_name,userType:type,postgresId:_id,email:email}
         await modelUser.findOneAndUpdate({username:notif.data.username},newU)
     }
     else if(notif.operation === 'DELETE'){

@@ -1,8 +1,6 @@
 import createListener from 'pg-listen'
-import { response, user } from './response'
+import { response} from './response'
 const {Client} = require('pg')
-//const {configDotenv} = require('dotenv')
-//configDotenv({path:'.env'})
 
 const pgconfig = {
     user:process.env.PGQL_USERNAME,
@@ -13,8 +11,18 @@ const pgconfig = {
     ssl:true//Change when using 
 }
 
+
+interface data{
+        username:String
+        name:String,
+        last_name:String,
+        type:String,
+        _id:Number,
+        email:String
+}
+
 export interface notification{
-    data:user,
+    data:data,
     operation:string
 }
 
@@ -27,7 +35,7 @@ const updateMongoDB = async (notification:notification) =>{
 
 const pgClient = new Client(pgconfig)
 const listener = createListener(pgconfig)
-listener.notifications.on('_users',updateMongoDB)
+listener.notifications.on('_user',updateMongoDB)
 
 const app = async () =>{
     try {
@@ -35,7 +43,7 @@ const app = async () =>{
         console.log('Connected to PostgreSQL');
         await listener.connect();
         console.log('Listening for changes...');
-        await listener.listenTo('_users')
+        await listener.listenTo('_user')
       } catch (err) {
         console.error('Error connecting to PostgreSQL:', err);
       }

@@ -2,8 +2,9 @@ import { modelCourse } from '../Model/CourseModel'
 import { modelUser } from '../Model/UserModel';
 import express from 'express'
 import mongoose from 'mongoose';
+import { cookieParser } from '../function/cookieParser';
+const jwt = require('jsonwebtoken')
 const CourseRouter = express.Router();
-
 
 function generateRandomCode(length:number) {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -87,12 +88,13 @@ CourseRouter.put('/admit', async (request, response) => {
       return response.status(404).json({error:'Enrollee or course could not be found.'})
     }
     const updatedCourse = await course?.updateOne({ $addToSet: { roster: studentId }, $pull: {enrolling: studentId } }, { new: true });
-
     if (!updatedCourse) {
       // If no matching document was found, return a 404 response.
       return response.status(404).json("User not enrolled in course.");
     }
-
+    const authorId = course?.author?._id
+    await modelUser.findOneAndUpdate({_id:authorId},{$addToSet : {students: studentId}})
+    await newStudent?.updateOne({$addToSet:{courses:course}})
     // Send a 200 response with the updated course
     response.status(200).json(updatedCourse);
   } catch (error) {
@@ -123,10 +125,29 @@ CourseRouter.get('/get/code/:code',async(request,response)=>{
 
 CourseRouter.put('/enroll', async (request, response) => {
   const body = request.body;
-
+  if(!request.headers.cookie){
+    return response.status(401).json({error:'Missing access token.'})
+  }
+  let decodedToken;
+  try{
+    const parsedCookies = cookieParser(request.headers.cookie)
+    const token = parsedCookies.token
+    const options = {
+      algorithms: ['HS256'],
+    };
+    const pk:String = process.env.SECRET_KEY || ''
+    const privateKey = Buffer.from(pk, 'base64');
+    decodedToken = await jwt.verify(token,privateKey,options)
+    
+  }catch(err){
+    console.log(err)
+    return response.status(401).json({error:'Invalid request token'})
+  }
   try {
-  
     const student = await modelUser.findById(body.id)
+    if(student?.postgresId != decodedToken.pg_id || decodedToken.role != 'STUDENT'){
+      return response.status(403).json({error:"You do not have the permission to perform this operation."})
+    }
     const code = body.code
     const updatedCourse = await modelCourse.findOneAndUpdate({ code:code },{ $addToSet: { enrolling: student } }, { new: true });
 

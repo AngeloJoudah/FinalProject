@@ -10,4 +10,5 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/src/certs/ /app/certs
 EXPOSE 443
 RUN npm i serve
-CMD npx serve -p 443 -s build --ssl-cert ./certs/cert-vault-fp-https-secure-20231119.pfx
+CMD npx serve -p 443 -s build 
+#--ssl-cert ./certs/cert-vault-fp-https-secure-20231119.pfx

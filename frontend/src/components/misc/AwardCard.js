@@ -5,7 +5,7 @@ export const AwardCard = ({title, read,instructor, className, image, fileType, t
     
     return (
         <Card className='col-lg-3 col-md-5 col-sm-8 col-xs-12 offset-md-1 offset-sm-2' onClick={onClick}>
-            {read ? null : <h1>hi</h1>}
+            {read ? null : <h1></h1>}
             <Card.Header>
                 <Card.Title>
                     <h5 style={{textOverflow:'ellipsis',overflow:'hidden',whiteSpace:'nowrap'}}>{title}</h5>

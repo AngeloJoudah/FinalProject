@@ -10,7 +10,8 @@ import ComplementsRouter from './Router/ComplementsRouter'
 import AwardRouter from './Router/AwardRouter'
 const app = express()
 const PORT = 8081
-
+const cors = require('cors')
+app.use(cors())
 app.use(express.json({ limit: '20mb' }));
 app.use(bodyParser.json({ limit: '20mb' }))
 app.use('/api/v2/courses',CourseRouter)

@@ -20,7 +20,7 @@ export const Complement = () => {
 
   const getComplements = async () => {
     try {
-      const request = await axios.get(`https://localhost:8081/api/v2/complements/user/${localStorage.getItem('_id')}/pagination/${pagination}`);
+      const request = await axios.get(`http://localhost:8081/api/v2/complements/user/${localStorage.getItem('_id')}/pagination/${pagination}`);
       const data = request.data;
       const images = data.map(buffer => {
         const base64String = btoa(String.fromCharCode(...new Uint8Array(buffer.data.data)))
@@ -69,7 +69,7 @@ export const Complement = () => {
       const reader = new FileReader();
       reader.onload = function (e) {
         const base64 = e.target.result;
-        const request = axios.post(`https://localhost:8081/api/v2/complements/`,{
+        const request = axios.post(`http://localhost:8081/api/v2/complements/`,{
           file: base64,
           fileName: str,
           _id: localStorage.getItem('_id'),
@@ -107,7 +107,7 @@ export const Complement = () => {
   const handleSubmit = async (event) => {
     await event.preventDefault()
     try{
-        await axios.post(`https://localhost:8081/api/v2/awards/`,{complementId:selected._id,_id:id,message:text,creatorId:localStorage.getItem('_id'),title:title})
+        await axios.post(`http://localhost:8081/api/v2/awards/`,{complementId:selected._id,_id:id,message:text,creatorId:localStorage.getItem('_id'),title:title})
         nav(`/courses`)
     }catch(err){
         console.log(err)

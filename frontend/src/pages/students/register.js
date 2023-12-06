@@ -20,7 +20,7 @@ export const Register = () => {
         const code = event.target[0].value
         try{
             console.log(code)
-            const request = await axios.get(`https://localhost:8081/api/v2/courses/get/code/${code}`,{headers:{"Content-Type":"application/json"}})
+            const request = await axios.get(`http://localhost:8081/api/v2/courses/get/code/${code}`,{headers:{"Content-Type":"application/json"}})
             setCode(code)
             setCourse(request.data)
             setErr(false)
@@ -31,7 +31,7 @@ export const Register = () => {
     }
     const register = async() =>{
       try{
-        await axios.put(`https://localhost:8081/api/v2/courses/enroll`,{code:code,id:localStorage.getItem('_id')}, { withCredentials: true })
+        await axios.put(`http://localhost:8081/api/v2/courses/enroll`,{code:code,id:localStorage.getItem('_id')}, { withCredentials: true })
         setRegError(false)
         setShowModal(false)
         setSuccess(true)

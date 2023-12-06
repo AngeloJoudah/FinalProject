@@ -16,7 +16,7 @@ export const Template = ({children, style}) => {
   const [isLoading,setIsLoading] = useState(true)
   const getUserData = async() =>{
     try{
-        const request = await axios.get(`https://localhost:8081/api/v2/users/username/${localStorage.getItem("user")}`)
+        const request = await axios.get(`http://localhost:8081/api/v2/users/username/${localStorage.getItem("user")}`)
         setImage(request.data.profilePicture)
     } catch(err){
       setImage(AvatarIcon)

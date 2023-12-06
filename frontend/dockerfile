@@ -7,7 +7,8 @@ RUN npm run build
 FROM node:alpine
 WORKDIR /app/
 COPY --from=build /app/build /app/build
-EXPOSE 443
+EXPOSE 80
 RUN npm i serve
-CMD npx serve -p 443 -s build --ssl
+#ENV HTTPS=true
+CMD npx serve -p 80 -s build
 

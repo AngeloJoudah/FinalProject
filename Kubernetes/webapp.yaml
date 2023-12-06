@@ -147,7 +147,7 @@ spec:
     - name: frontend
       image: psdemoacrangelo.azurecr.io/fpfe:latest
       ports:
-      - containerPort: 443
+      - containerPort: 80
         protocol: TCP
         name: http
       env:
@@ -173,7 +173,7 @@ spec:
       image: psdemoacrangelo.azurecr.io/kafka:latest
       env:
       - name: KAFKA_SERVER
-        value: my-cluster-kafka-bootstrap.default.svc.cluster.local:9093
+        value: my-cluster-kafka-bootstrap.default.svc.cluster.local:9092
       ports:
       - containerPort: 8082
 
@@ -256,8 +256,8 @@ spec:
  ports:
    - name: http
      protocol: TCP
-     port: 443
-     targetPort: 443
+     port: 80
+     targetPort: 80
    - name: api-v1
      protocol: TCP
      port: 8080
@@ -277,11 +277,11 @@ metadata:
   name: app-ingress
   annotations:
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
-    appgw.ingress.kubernetes.io/backend-protocol: "https"
+    appgw.ingress.kubernetes.io/backend-protocol: "http"
     appgw.ingress.kubernetes.io/appgw-ssl-certificate: https-secure
     #kubernetes.io/ingress.class: azure/application-gateway
-    appgw.ingress.kubernetes.io/backend-hostname: backend
-    appgw.ingress.kubernetes.io/appgw-trusted-root-certificate: backend-tls
+    #appgw.ingress.kubernetes.io/backend-hostname: backend
+   # appgw.ingress.kubernetes.io/appgw-trusted-root-certificate: backend-tls
 spec:
   ingressClassName: azure-application-gateway
   tls:
@@ -298,7 +298,7 @@ spec:
           service:
             name: webapp-service
             port:
-              number: 443
+              number: 80
       - path: /api/v1/*
         pathType: Prefix
         backend:

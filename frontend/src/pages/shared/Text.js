@@ -18,7 +18,7 @@ export const Text = () => {
 
   const getUserData = async() =>{
     try{
-      const request = await axios.get(`https://localhost:8081/api/v2/chats/user/${localStorage.getItem("_id")}/chat/${chatId}`)
+      const request = await axios.get(`http://localhost:8081/api/v2/chats/user/${localStorage.getItem("_id")}/chat/${chatId}`)
       console.log(request.data)
       if(request.user1._id === localStorage.getItem("_id")){
         setUserImage(request.data.user1.profilePicture)
@@ -43,7 +43,7 @@ export const Text = () => {
   const loadMessages = async () => {
     try {
       const request = await axios.get(
-        `https://localhost:8082/api/v3/messages/getBase?topic=${chatId}`,
+        `http://localhost:8082/api/v3/messages/getBase?topic=${chatId}`,
         { headers: { 'Content-Type': 'application/json' } }
       );
       console.log(request.data);
@@ -68,10 +68,10 @@ export const Text = () => {
     const fetchData = async () => {
       try {
         console.log(initialOffset)
-        const req = await axios.get(`https://localhost:8082/api/v3/messages/getOffset?topic=${chatId}`);
+        const req = await axios.get(`http://localhost:8082/api/v3/messages/getOffset?topic=${chatId}`);
         if (offset < req.data) {
           const newMessages = await axios.get(
-            `https://localhost:8082/api/v3/messages/get?topic=${chatId}&offset=${offset}`,
+            `http://localhost:8082/api/v3/messages/get?topic=${chatId}&offset=${offset}`,
             { headers: { 'Content-Type': 'application/json' } }
           );
           if (newMessages.data.length > 0) {
@@ -94,7 +94,7 @@ export const Text = () => {
   const onSubmitHandler = async event =>{
     await event.preventDefault()
     const mes = localStorage.getItem('user') + ': ' + event.target[0].value
-    await axios.post(`https://localhost:8082/api/v3/messages/post`,{message:mes,topic:chatId},{headers:{"Content-Type":"application/json"}}).then(()=>{
+    await axios.post(`http://localhost:8082/api/v3/messages/post`,{message:mes,topic:chatId},{headers:{"Content-Type":"application/json"}}).then(()=>{
       setMessages([...messages,mes]);
       let textInput = event.target[0]
       textInput.value = ''
@@ -109,7 +109,7 @@ export const Text = () => {
       if(os > 0){
         try{
         const newMessages = await axios.get(
-          `https://localhost:8082/api/v3/messages/get?topic=${chatId}&offset=${os}`,
+          `http://localhost:8082/api/v3/messages/get?topic=${chatId}&offset=${os}`,
           { headers: { 'Content-Type': 'application/json' } }
         )
         setInitialOffset(initialOffset-10)

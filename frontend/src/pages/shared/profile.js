@@ -20,7 +20,7 @@ export const Profile = () => {
 
     const getUserData = async() =>{
         try{
-            const request = await axios.get(`https://localhost:8081/api/v2/users/id/${personId}`)
+            const request = await axios.get(`http://localhost:8081/api/v2/users/id/${personId}`)
             setImage(request.data.profilePicture)
             setDescription(request.data.description)
             setName(request.data.username)
@@ -33,7 +33,7 @@ export const Profile = () => {
     }
     const checkIsStudent = async() =>{
         try{
-            await axios.get(`https://localhost:8081/api/v2/users/id/${localStorage.getItem('_id')}/student/${personId}`)
+            await axios.get(`http://localhost:8081/api/v2/users/id/${localStorage.getItem('_id')}/student/${personId}`)
             setIsStudent(true)
         }catch(err){
             console.log(err)
@@ -43,7 +43,7 @@ export const Profile = () => {
         const arr = [personId,localStorage.getItem('_id')]
         arr.sort()
         console.log(arr)
-        const request = await axios.post('https://localhost:8081/api/v2/chats',{userId:arr[0],otherId:arr[1]})
+        const request = await axios.post('http://localhost:8081/api/v2/chats',{userId:arr[0],otherId:arr[1]})
         console.log(request.data)
         nav(`/chats/messages/${request.data._id}`);
     }

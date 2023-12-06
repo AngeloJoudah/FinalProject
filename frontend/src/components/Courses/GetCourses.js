@@ -11,7 +11,7 @@ export const Courses = () =>{
         response()
       }, []);
     const response = async() => {
-        await axios.get(`https://localhost:8081/api/v2/users/${localStorage.getItem('_id')}/courses`)
+        await axios.get(`http://localhost:8081/api/v2/users/${localStorage.getItem('_id')}/courses`)
         .then(response =>{
             setData(response.data.courses)
             setIsLoading(false)

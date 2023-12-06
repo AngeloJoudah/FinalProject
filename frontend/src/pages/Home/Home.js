@@ -13,7 +13,7 @@ export const Home = () =>{
          </h1>
         </Row>
         <Row>
-            <p>Your Enrolled Courses</p>
+            
         </Row>
         <Row>
             <Col>

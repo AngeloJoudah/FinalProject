@@ -18,7 +18,7 @@ export const Assignment = ({}) => {
     const request = async()=>{
         setIsLoading(true)
         try{
-            const req = await axios.get(`https://localhost:8081/api/v2/assignments/${assignmentId}`)
+            const req = await axios.get(`http://localhost:8081/api/v2/assignments/${assignmentId}`)
             setName(req.data.name)
             setPdfBuffer(req.data.content.data)
 

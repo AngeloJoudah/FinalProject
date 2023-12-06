@@ -17,21 +17,21 @@ export const Admit = () => {
     const {courseId} = useParams()
     const reject = async(id) =>{
         try{
-            await axios.put(`https://localhost:8081/api/v2/courses/enrolling/remove`,{courseId: courseId, userId: id})
+            await axios.put(`http://localhost:8081/api/v2/courses/enrolling/remove`,{courseId: courseId, userId: id})
         }catch(error){
             console.log(error)
         }
     }
     const enroll = async(id) =>{
         try{
-            await axios.put(`https://localhost:8081/api/v2/courses/admit`,{courseId: courseId, userId: id})
+            await axios.put(`http://localhost:8081/api/v2/courses/admit`,{courseId: courseId, userId: id})
         }catch(error){
             console.log(error)
         }
     }
     const getCourse = async() =>{
         try{
-            const request = await axios.get(`https://localhost:8081/api/v2/courses/${courseId}`)
+            const request = await axios.get(`http://localhost:8081/api/v2/courses/${courseId}`)
             setCourseName(request.data.name)
             setUsers(request.data.enrolling)
         }catch(err){

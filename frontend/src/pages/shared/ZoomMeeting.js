@@ -11,8 +11,8 @@ export const ZoomMeeting = () => {
 
   const requestAccessToken = () => {
     axios.post(
-      `https://localhost:8081/api/v2/zoom/access`,
-      { code: code, url: 'https://localhost:443/zoom/meeting' },
+      `http://localhost:8081/api/v2/zoom/access`,
+      { code: code, url: 'http://localhost:443/zoom/meeting' },
       { headers: { 'Content-Type': 'application/json' } }
     )
     .then(zakRequest => {
@@ -29,7 +29,7 @@ export const ZoomMeeting = () => {
     const username = localStorage.getItem('user');
     let meetingSDKElement = document.getElementById('meetingSDKElement');
 
-    axios.post('https://localhost:8081/api/v2/zoom/CreateMeetingToken', {
+    axios.post('http://localhost:8081/api/v2/zoom/CreateMeetingToken', {
       mn: mn,
     })
     .then(promise => {

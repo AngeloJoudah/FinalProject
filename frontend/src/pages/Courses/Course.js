@@ -13,6 +13,7 @@ import EyeClosed from '../../icons/eye-off-outline.svg'
 import Bell from '../../icons/notifications-outline.svg'
 import { Doesnotexist } from '../shared/doesnotexist'
 import { Recipient } from '../../components/Courses/Recipient'
+import {Row} from 'react-bootstrap'
 export const Course = () => {
     const [image,setImage] = useState('/images/pulsar.jpg')
     const [isLoading,setIsLoading] = useState(true)
@@ -33,7 +34,7 @@ export const Course = () => {
     const nav = useNavigate()
     const getCourseData = async()=>{
         try{
-            const request = await axios.get(`http://localhost:8081/api/v2/courses/${courseId}`)
+            const request = await axios.get(`https://ofcourse.website/api/v2/courses/${courseId}`)
             console.log(request.data)
             setImage(request.data.image)
             setRoster(request.data.roster)
@@ -53,7 +54,7 @@ export const Course = () => {
     const generateNewCode = async() =>{
         if(localStorage.getItem('type') === 'TEACHER'){
             try{
-                const request = await axios.put(`http://localhost:8081/api/v2/courses/code`,{id:courseId})
+                const request = await axios.put(`https://ofcourse.website/api/v2/courses/code`,{id:courseId})
                 setCode(request.data.code)
             }catch{
                 setCodeError(false)
@@ -63,7 +64,7 @@ export const Course = () => {
     const lookUp = async() =>{
         if(search && search.length > 0){
             try{
-                const req = await axios.get(`http://localhost:8081/api/v2/users/search/${search}`)
+                const req = await axios.get(`https://ofcourse.website/api/v2/users/search/${search}`)
                 setSearchResults(req.data)
             }catch(err){
                 console.log(err)

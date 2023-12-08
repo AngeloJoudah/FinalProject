@@ -11,7 +11,7 @@ export const Awards = () => {
   const nav = useNavigate()
   const getAwards = async()=>{
     try{
-      const req = await axios.get(`http://localhost:8081/api/v2/awards/id/${localStorage.getItem('_id')}`)
+      const req = await axios.get(`https://ofcourse.website/api/v2/awards/id/${localStorage.getItem('_id')}`)
       setAwards(req.data)
       console.log(req.data)
     }catch(err){

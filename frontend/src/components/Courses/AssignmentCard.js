@@ -10,7 +10,7 @@ export const AssignmentCard = ({name, due, courseId, assignmentId}) =>{
   const [dropdown,showDropdown] = useState(false)
   const remove = async() =>{
     try{
-      await axios.delete(`http://localhost:8081/api/v1/assignments/${assignmentId}`)
+      await axios.delete(`https://ofcourse.website/api/v1/assignments/${assignmentId}`)
     }catch{
       alert('Failed to delete assignment. Try again')
     }

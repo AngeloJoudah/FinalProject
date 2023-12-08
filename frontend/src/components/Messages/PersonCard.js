@@ -18,7 +18,7 @@ export const PersonCard = ({name, image, chatId, otherId}) => {
     if(otherId ? otherId.length > 0 : false){
       const arr = [otherId,localStorage.getItem('_id')]
       arr.sort()
-      const request = await axios.post('http://localhost:8081/api/v2/chats',{userId:arr[0],otherId:arr[1]})
+      const request = await axios.post('https://ofcourse.website/api/v2/chats',{userId:arr[0],otherId:arr[1]})
       nav(`/chats/messages/${request.data._id}`);
     }else{
       nav(`/chats/messages/${chatId}`);

@@ -48,7 +48,7 @@ export const CreateAssignment = () => {
             // Access the file data using formData.get('file')
             console.log(formData.get('file'));
         
-            await axios.post('http://localhost:8081/api/v2/assignments', {
+            await axios.post('https://ofcourse.website/api/v2/assignments', {
                 name: values.name,
                 description: values.description,
                 content: file,

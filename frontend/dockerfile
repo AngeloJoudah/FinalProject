@@ -1,14 +1,17 @@
+# Stage 1: Build
 FROM node:alpine AS build
-RUN mkdir /app
-WORKDIR /app/
+WORKDIR /app
 COPY ./../ ./
-RUN npm i
+RUN npm install
 RUN npm run build
+
+# Stage 2: Final image
 FROM node:alpine
-WORKDIR /app/
+WORKDIR /app
 COPY --from=build /app/build /app/build
-EXPOSE 80
-RUN npm i serve
-#ENV HTTPS=true
-CMD npx serve -p 80 -s build
+COPY --from=build /app/src/certs /app/certs/
+EXPOSE 443
+RUN npm install -g serve
+ENV HTTPS=true
+CMD npx serve -p 443 -s build --ssl-cert /app/certs/backend.crt --ssl-key /app/certs/backend.key
 

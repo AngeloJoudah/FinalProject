@@ -25,7 +25,7 @@ export const AddCourse = () =>{
             }
             try{
                 await axios
-                .post('http://localhost:8081/api/v2/courses',data,{headers:{"Content-Type":"application/json"}})
+                .post('https://ofcourse.website/api/v2/courses',data,{headers:{"Content-Type":"application/json"}})
                 navigate('/courses')
             }catch(err){
                 setMessage(<h1 style={{color:"red"}}><strong>Something went wrong, please try again</strong></h1>)

@@ -16,7 +16,7 @@ export const Login = () =>{
     const handleSubmit = async (values,formikBag) =>{
         if(values.password && values.username) {
             await axios
-            .post(`http://localhost:8080/api/v1/auth/authentication`,values,{headers:{
+            .post(`https://ofcourse.website/api/v1/auth/authentication`,values,{headers:{
                 "Content-Type":"application/json"
             }
             })
@@ -26,7 +26,7 @@ export const Login = () =>{
                     document.cookie = `${'token'}=${encodeURIComponent(token)}; expires=${Date.now() + 30 * 1000 * 60}; path=/`
                     console.log(document.cookie)
                     await auth.login({token:token,newUser:values.username})
-                    const getId = await axios.get(`http://localhost:8081/api/v2/users/username/${values.username}`).catch(err=>{
+                    const getId = await axios.get(`https://ofcourse.website/api/v2/users/username/${values.username}`).catch(err=>{
                         console.error(err)
                     })
                     localStorage.setItem("_id",getId.data._id)

@@ -17,7 +17,7 @@ export const Chats = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/api/v2/chats/user/${localStorage.getItem('_id')}`);
+        const response = await axios.get(`https://ofcourse.website/api/v2/chats/user/${localStorage.getItem('_id')}`);
         const chatData = response.data.chats;
         const otherUsers = chatData.map(chat => chat.user1._id === myId ? chat.user2 : chat.user1);
         setChats(otherUsers);
@@ -39,7 +39,7 @@ export const Chats = () => {
   const handleSearchChange = async (event) => {
     if(event.target.value.length > 0 ){
       await event.preventDefault()
-      await axios.get(`http://localhost:8081/api/v2/users/search/${event.target.value}`,{headers:{"Content-Type":"application/json"}}).then(e =>{
+      await axios.get(`https://ofcourse.website/api/v2/users/search/${event.target.value}`,{headers:{"Content-Type":"application/json"}}).then(e =>{
         setSearchResults(e.data)
         console.log(e.data)
         setShowDropdown(true)
@@ -52,7 +52,7 @@ export const Chats = () => {
   };
   return (
     <Template>
-      <div className='container'>
+      <div className='container' onClick={()=>{setShowDropdown(false)}}>
         {routes.length > 0 ? <Routes>{routeConfiguration}</Routes> : null}
         <div className='search-dropdown'>
           <input

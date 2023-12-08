@@ -14,7 +14,7 @@ export const Award = () => {
     const [image,setImage] = useState('')
     const getAward = async () => {
         try {
-            const req = await axios.get(`http://localhost:8081/api/v2/awards/awardId/${awardId}`);
+            const req = await axios.get(`https://ofcourse.website/api/v2/awards/awardId/${awardId}`);
             const data = req.data.mapped._doc
             setTitle(data.title)
             setMessage(data.message)

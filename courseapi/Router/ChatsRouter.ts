@@ -7,6 +7,7 @@ const ChatsRouter = express.Router();
 ChatsRouter.post('/', async (request, response) => {
   const userId = request.body.userId;
   const otherId = request.body.otherId;
+  console.log(userId,otherId)
   if (!userId && !otherId) {
     return response.status(400).json({ error: 'Invalid request body' });
   }

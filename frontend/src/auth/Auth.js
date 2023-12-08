@@ -14,6 +14,7 @@ export const AuthProvider = ({children}) => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('_id')
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     setUser(null)
   }
   

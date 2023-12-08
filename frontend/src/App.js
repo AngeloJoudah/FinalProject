@@ -1,5 +1,4 @@
 import {createBrowserRouter,Route,createRoutesFromElements, RouterProvider} from 'react-router-dom'
-import {Home} from './pages/Home/Home'
 import {CourseList} from './pages/Courses/CourseList'
 import {AddCourse} from "./pages/Courses/AddCourse";
 import { Login } from "./pages/login/Login";
@@ -25,8 +24,7 @@ const router = createBrowserRouter(
     <Route path="/">
       <Route path="/chats/*" element={<RequireAuth><Chats /></RequireAuth>} />
       <Route path="/chats/messages/:chatId" element={<RequireAuth><Text/></RequireAuth>}/>
-      <Route index render element={<RequireAuth><Home/></RequireAuth>}/>
-      <Route path='courses' element={<RequireAuth><CourseList /></RequireAuth>}/>
+      <Route index render element={<RequireAuth><CourseList /></RequireAuth>}/>
       <Route path='courses/add' element={<RequireAuth><AddCourse /></RequireAuth>}/>
       <Route path='course/:courseId' element={<RequireAuth><Course/></RequireAuth>}/>
       <Route path='chats/*' element={<RequireAuth><Chats /></RequireAuth>}/>

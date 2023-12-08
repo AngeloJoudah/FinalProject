@@ -14,7 +14,6 @@ export const Header = () =>{
             <Navbar.Brand href="/" style={{fontSize:"3vw"}} className="mr-5">OfCourse</Navbar.Brand>
             <Nav className="me-auto ml-5">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/courses">Courses</Nav.Link>
               <Nav.Link href="/zoom">Zoom</Nav.Link>
               <Nav.Link href="/chats">Chats</Nav.Link>
               {localStorage.getItem('type')==='STUDENT' ? <Nav.Link href="/register">Register</Nav.Link> : null}

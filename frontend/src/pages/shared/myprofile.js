@@ -16,7 +16,7 @@ export const Profile = () => {
     const [lengthError,setLengthError] = useState(false)
     const getUserData = async() =>{
         try{
-            const request = await axios.get(`http://localhost:8081/api/v2/users/username/${localStorage.getItem("user")}`)
+            const request = await axios.get(`https://ofcourse.website/api/v2/users/username/${localStorage.getItem("user")}`)
             setImage(request.data.profilePicture)
             setDescription(request.data.description)
         } catch(err){
@@ -36,7 +36,7 @@ export const Profile = () => {
     const updateDescription = async() =>{
       try{
         if(newText.length > 0){
-          const req = await axios.put('http://localhost:8081/api/v2/users/description',{_id:localStorage.getItem('_id'),text:newText})
+          const req = await axios.put('https://ofcourse.website/api/v2/users/description',{_id:localStorage.getItem('_id'),text:newText})
           if(req.status == 200){
             setDescription(newText)
           }
@@ -63,7 +63,7 @@ export const Profile = () => {
       
             // After setting the image state, send the POST request
             axios.post(
-              `http://localhost:8081/api/v2/users/image`,
+              `https://ofcourse.website/api/v2/users/image`,
               { profilePicture: base64String, username: localStorage.getItem('user') },
               { headers: { 'Content-Type': 'application/json' } }
             )

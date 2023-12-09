@@ -4,12 +4,14 @@ const dotenv = require('dotenv')
 dotenv.config()
 async function uploadFileToAzure(files) {
   const file = files[0]
+  console.log(file)
   const connectionString = process.env.STORAGE_STRING; // Replace with your Azure Storage connection string
   const containerName = process.env.PDF_STORAGE; // Replace with your container name
   const blobName = file.originalname;
+  const finalName = blobName === "" ? "newBlob" : blobName
   const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
   const containerClient = blobServiceClient.getContainerClient(containerName);
-  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+  const blockBlobClient = containerClient.getBlockBlobClient(finalName);
 
   try {
     await blockBlobClient.uploadData(file);

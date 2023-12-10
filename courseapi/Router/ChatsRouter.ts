@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { modelChat } from '../Model/ChatsModel';
 import { modelUser } from '../Model/UserModel';
 import express from 'express'
@@ -14,7 +13,7 @@ ChatsRouter.post('/', async (request, response) => {
   try {
     const user = await modelUser.findById(userId)
     const other = await modelUser.findById(otherId)
-    if(!user && !other){
+    if(!user || !other){
       return response.status(404).json({error:'One or more users could not be found.'})
     }
     const exists = await modelChat.findOne({
@@ -62,7 +61,7 @@ ChatsRouter.get('/user/:id', async(request,response)=>{
     response.status(500).json({ error: 'Internal Server Error'})
   }
 })
-
+//import mongoose from 'mongoose';
 ChatsRouter.get('/user/:id/chat/:chatId',async(request,response)=>{
   try{
     const userId = request.params.id
@@ -75,8 +74,9 @@ ChatsRouter.get('/user/:id/chat/:chatId',async(request,response)=>{
     if(!user){
       return response.status(404).json({error:'user does not exist'})
     }
-    const chat = user.chats.find(chat => chat === new mongoose.Types.ObjectId(chatId))
-    chat ? response.status(200).json(chat) : response.status(404).json({error:'chat could not be found'})
+    const chat = user.chats.find(chat => chat._id.toString() === chatId)
+    const ret = chat ? await modelChat.findById(chatId).populate({path:'user1 user2'}) : null
+    ret ? response.status(200).json(ret) : response.status(404).json({error:'chat could not be found'})
   } catch(err){
     console.error(err)
     return response.status(500).json({ error: 'Internal Server Error'})

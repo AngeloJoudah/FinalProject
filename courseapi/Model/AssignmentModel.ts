@@ -16,6 +16,10 @@ const assignmentSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     }],
+    submissions: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Submissions'
+    }],
 })
 
 export const modelAssignment = mongoose.model('Assignments',assignmentSchema)

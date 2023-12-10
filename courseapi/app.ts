@@ -8,6 +8,7 @@ import AssignmentsRouter from './Router/AssignmentRouter'
 import ZoomRouter from './Router/ZoomRouter'
 import ComplementsRouter from './Router/ComplementsRouter'
 import AwardRouter from './Router/AwardRouter'
+import SubmissionRouter from './Router/SubmissionRouter'
 const cors = require('cors')
 const app = express()
 const fs = require('fs')
@@ -40,6 +41,7 @@ app.use('/api/v2/zoom',ZoomRouter)
 app.use('/api/v2/assignments',AssignmentsRouter)
 app.use('/api/v2/complements',ComplementsRouter)
 app.use('/api/v2/awards',AwardRouter)
+app.use('/api/v2/submissions',SubmissionRouter)
 const server = https.createServer(sslOptions, app)
 
 server.listen(PORT,async ()=>{

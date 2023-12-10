@@ -1,26 +1,38 @@
+import { modelCourse } from '../Model/CourseModel';
 import { modelSubmission } from '../Model/SubmissionModel'
 import express from 'express'
-
+import uploadFileToAzure from '../function/UploadToAzure';
+import { modelAssignment } from '../Model/AssignmentModel';
+const multer = require('multer')
+const upload = multer({});
 const SubmissionRouter = express.Router();
 
-SubmissionRouter.post('/',async(request,response)=>{
-    const {user,instructor,course,assignment,content} = request.body
-    if(!user && !instructor && !course && !assignment && !content){
+SubmissionRouter.post('/',upload.any(),async(request,response)=>{
+    const {courseId,studentId,assignmentId} = request.body
+    const file = request.files
+    console.log(file)
+    if(!studentId && !courseId && !assignmentId && !file){
         return response.status(400).json('Invalid request body')
     }
     else{
         try{
+            const course = await modelCourse.findById(courseId)
+            const instructor = course?.author
+            const url = await uploadFileToAzure(file)
             const newSubmission = new modelSubmission({
-                user:user,
+                user:studentId,
                 instructor:instructor,
-                course:course,
-                assignment:assignment,
-                content:content
+                course:courseId,
+                assignment:assignmentId,
+                content:url
             })
-            await newSubmission.save()
+            const newSub = await newSubmission.save()
+            console.log(newSub.id)
+            await modelAssignment.updateOne({_id:assignmentId},{$addToSet:{submissions:newSub}})
             response.status(200)
 
         }catch(err){
+            console.log(err)
             response.status(500).json({error:'Internal Server error'})
         }
     }
@@ -36,9 +48,28 @@ SubmissionRouter.get('/:id',async(request,response)=>{
         response.status(200).json(submission)
     }catch(err){
         console.log(err)
-        response.status(500).json('Internal Server Error.')
+        response.status(500).json({error:'Internal server error.'})
     }
 })
+
+SubmissionRouter.get('/assignment/:assignmentId',async(request,response)=>{
+    const {assignmentId} = request.params
+    if(!assignmentId){
+        return response.status(404).json({error:'Assignment ID missing.'})
+    }
+    try{
+        const assignment = await modelAssignment.findById(assignmentId).populate('submissions')
+        if(!assignment){
+            return response.status(404).json({error:'Assignment not found.'})
+        }
+        const submissions = assignment.submissions
+        return response.status(200).json(submissions)
+    }catch(err){
+        console.log(err)
+        response.status(500).json({error:'Internal server error'})
+    }
+})
+
 SubmissionRouter.put('/content',async(request,response)=>{
     const {id,content} = request.body
     try{

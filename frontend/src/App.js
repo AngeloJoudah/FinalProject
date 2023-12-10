@@ -19,6 +19,7 @@ import { Profile as Prof } from './pages/shared/profile';
 import { Complement } from './pages/instructors/complement';
 import { Awards } from './pages/students/awards';
 import { Award } from './pages/students/Award';
+import { Submit } from './pages/students/Submit';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
       <Route path="/profile/:personId" element={<RequireAuth><Prof/></RequireAuth>}/>
       <Route path="/register" element={<RequireAuth><Register/></RequireAuth>}/>
       <Route path='/course/:courseId/assignments/create/' element={<RequireAuth><CreateAssignment/></RequireAuth>}/>
+      <Route path='/course/:courseId/assignment/:assignmentId/submit' element={<RequireAuth><Submit/></RequireAuth>}/>
       <Route path='/course/:courseId/assignment/:assignmentId' element={<RequireAuth><Assignment/></RequireAuth>}/>
       <Route path='/course/:courseId/admit' element={<RequireAuth><Admit/></RequireAuth>}/>
       <Route path='/zoom/' element={<RequireAuth><ZoomRoom /></RequireAuth>}/>

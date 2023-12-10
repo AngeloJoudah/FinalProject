@@ -20,7 +20,7 @@ export const Text = () => {
     try{
       const request = await axios.get(`https://ofcourse.website/api/v2/chats/user/${localStorage.getItem("_id")}/chat/${chatId}`)
       console.log(request.data)
-      if(request.user1._id === localStorage.getItem("_id")){
+      if(request.data.user1._id === localStorage.getItem("_id")){
         setUserImage(request.data.user1.profilePicture)
         setOtherImage(request.data.user2.profilePicture)
       }else{
@@ -29,6 +29,7 @@ export const Text = () => {
       }
       
     }catch(err){
+      console.log(err)
       setErr(true)
     }finally{
       setLoading(false)
@@ -71,7 +72,7 @@ export const Text = () => {
         const req = await axios.get(`https://ofcourse.website/api/v3/messages/getOffset?topic=${chatId}`);
         if (offset < req.data) {
           const newMessages = await axios.get(
-            `https://ofcourse.website/api/v3/messages/get?topic=${chatId}&offset=${offset}`,
+            `https://ofcourse.website/api/v3/ofcourse.website/get?topic=${chatId}&offset=${offset}`,
             { headers: { 'Content-Type': 'application/json' } }
           );
           if (newMessages.data.length > 0) {
@@ -131,7 +132,7 @@ export const Text = () => {
           ) : messages.length > 0 ? (
             messages.map((message, index) => <Messagebox key={index} text={message} Userimage={userImage} otherImage={otherImage} />)
           ) : !err ? (
-            <h1>This is the beginning of your chat history</h1>
+            <h1 style={{color:'white'}}>This is the beginning of your chat history</h1>
           ) : (
             <h1 style={{ textAlign: 'center' }}>Something went wrong... Refresh to try again</h1>
           )}

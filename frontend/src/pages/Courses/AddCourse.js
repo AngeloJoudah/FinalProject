@@ -21,12 +21,13 @@ export const AddCourse = () =>{
                 author:localStorage.getItem("_id"),
                 name:name,
                 description:desc,
-                image:file
+                image:file,
+                
             }
             try{
                 await axios
                 .post('https://ofcourse.website/api/v2/courses',data,{headers:{"Content-Type":"application/json"}})
-                navigate('/courses')
+                navigate('/')
             }catch(err){
                 setMessage(<h1 style={{color:"red"}}><strong>Something went wrong, please try again</strong></h1>)
                 console.error(err)

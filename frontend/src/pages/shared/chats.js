@@ -73,7 +73,7 @@ export const Chats = () => {
         {isLoading ? <SpinnerLoader /> : null}
         {chats.length > 0 && !isLoading
           ? chats.map(person => (
-              <PersonCard chatId={person._id} name={person.username} image={person.profilePicture} />
+              <PersonCard otherId={person._id} name={person.username} image={person.profilePicture} />
             ))
           : !isLoading ? <h1 style={{ textAlign: "center" }}>There are no chats here!</h1> : null}
           </div>

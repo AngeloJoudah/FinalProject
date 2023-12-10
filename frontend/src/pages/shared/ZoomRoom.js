@@ -5,7 +5,7 @@ export const ZoomRoom = () => {
     const client_id = 'O06Zp5G2S1ORaByQI1UM6Q'
     const getZAK = async() =>{
       try{
-        window.location.href = `http://zoom.us/oauth/authorize?response_type=code&client_id=${client_id}&redirect_uri=https://ofcourse.website:443/zoom/meeting`
+        window.location.href = `http://zoom.us/oauth/authorize?response_type=code&client_id=${client_id}&redirect_uri=https://ofcourse.website/zoom/meeting`
       }
       catch(err){
         console.log(err)

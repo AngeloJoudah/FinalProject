@@ -39,6 +39,7 @@ export const Assignment = ({}) => {
         {isLoading ? 
         <SpinnerLoader/>
         : <div>
+            {localStorage.getItem('type') === 'TEACHER' ? <Button onClick={()=>{nav(`/course/${courseId}/assignment/${assignmentId}/submissions`)}}>See Submissions</Button> : null}
             <h1 style={{textAlign:"center"}}><strong>{name}</strong></h1>
             <AssignmentPDF ArrayBuffer={pdfBuffer}/>
             {localStorage.getItem('type') === 'STUDENT' ? <Button className='col-xs-12 col-md-4 offset-md-4 offset-xs-0 col-lg-2 offset-lg-5' onClick={()=>{nav(`/course/${courseId}/assignment/${assignmentId}/submit`)}}>Make a submission</Button>: null}

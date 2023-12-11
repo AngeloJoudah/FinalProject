@@ -16,6 +16,7 @@ export const Header = () =>{
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/zoom">Zoom</Nav.Link>
               <Nav.Link href="/chats">Chats</Nav.Link>
+              {localStorage.getItem('type')==='STUDENT' ? <Nav.Link href="/me/grades">Grades</Nav.Link> : null}
               {localStorage.getItem('type')==='STUDENT' ? <Nav.Link href="/register">Register</Nav.Link> : null}
             </Nav>
           </Container>

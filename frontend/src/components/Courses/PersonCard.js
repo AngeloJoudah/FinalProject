@@ -3,7 +3,7 @@ import { useState } from 'react';
 import profileIcon from '../../icons/avatar.svg'
 import { useNavigate} from 'react-router-dom';
 import { Card } from 'react-bootstrap';
-export const PersonCard = ({name, image, id}) => {
+export const PersonCard = ({name, image, id, canClick}) => {
 
   const nav = useNavigate()
   const [isHovered, setHovered] = useState(false);
@@ -15,7 +15,9 @@ export const PersonCard = ({name, image, id}) => {
     setHovered(false);
   };
   const onClickHandler = () => {
-    nav(`/profile/${id}`)
+    if(canClick){
+      nav(`/profile/${id}`)
+    }
   };
 
   return (

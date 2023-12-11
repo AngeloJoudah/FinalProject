@@ -15,11 +15,12 @@ const submissionSchema = new mongoose.Schema({
     },
     assignment:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Assignment'
+        ref:'Assignments'
     },
-    content:Buffer,
+    content:String,
     grade:Number,
-    comments:[String]
+    comments:String,
+    submitted:String
 
     
 })

@@ -20,6 +20,9 @@ import { Complement } from './pages/instructors/complement';
 import { Awards } from './pages/students/awards';
 import { Award } from './pages/students/Award';
 import { Submit } from './pages/students/Submit';
+import { Submissions } from './pages/instructors/Submissions';
+import { Submission } from './pages/instructors/Submission';
+import { Grades } from './pages/students/grades';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
@@ -43,6 +46,9 @@ const router = createBrowserRouter(
       <Route path='/zoom/meeting' element={<RequireAuth><ZoomMeeting /></RequireAuth>}/>
       <Route path='/me/awards' element={<RequireAuth><Awards /></RequireAuth>}/>
       <Route path='/me/awards/:awardId' element={<RequireAuth><Award /></RequireAuth>}/>
+      <Route path='/course/:courseId/assignment/:assignmentId/submissions/:submissionId' element={<RequireAuth><Submission/></RequireAuth>}/>
+      <Route path='/course/:courseId/assignment/:assignmentId/submissions' element={<RequireAuth><Submissions/></RequireAuth>}/>
+      <Route path='/me/grades' element={<RequireAuth><Grades /></RequireAuth>} />
     </Route>
   )
 )

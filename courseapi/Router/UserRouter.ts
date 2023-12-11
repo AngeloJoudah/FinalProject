@@ -145,7 +145,7 @@ UserRouter.get('/username/:username', async (request, response) => {
       response.status(500).json({ message: 'Internal Server Error' });
     }
   });
-  
+
 UserRouter.get('/search/:username',async(request,response)=>{
   const username = request.params.username
   console.log(username)

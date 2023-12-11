@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true
+    },
+    submissions:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Submissions',
+        required:false
     }
 })
 userSchema.index({username: 1},{unique:true})

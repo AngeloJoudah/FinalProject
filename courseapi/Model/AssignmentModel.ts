@@ -18,7 +18,8 @@ const assignmentSchema = new mongoose.Schema({
     }],
     submissions: [{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Submissions'
+        ref:'Submissions',
+        unique:true
     }],
 })
 

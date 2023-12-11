@@ -30,7 +30,6 @@ export const AssignmentPDF = ({ArrayBuffer}) => {
             </Document>
         </div>
         <p style={{textAlign:"center"}}>
-            page {page} of {numPages}
         </p>
     </div>
   )

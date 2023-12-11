@@ -151,7 +151,7 @@ export const Course = () => {
             </Tab>
 
             <Tab eventKey="Assignments" title="Assignments">
-                {localStorage.getItem('type') === 'TEACHER' ? <Button href={`${window.location.href}/assignments/create`} className='my-3'>Create + </Button> : null}
+                {localStorage.getItem('type') === 'TEACHER' ? <Button href={`/course/${courseId}/assignments/create`} className='my-3'>Create + </Button> : null}
                 {
                 assignments.length > 0 ?
                 <div className='row'>

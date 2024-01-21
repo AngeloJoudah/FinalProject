@@ -83,7 +83,7 @@ export const Login = () =>{
                         </Form.Text>
 
 
-                        <Form.Label htmlFor="name">Password</Form.Label>
+                        <Form.Label htmlFor="password">Password</Form.Label>
                         <Form.Control
                             type="password"
                             id="password"

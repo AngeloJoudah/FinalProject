@@ -72,7 +72,7 @@ export const Text = () => {
         const req = await axios.get(`https://ofcourse.website/api/v3/messages/getOffset?topic=${chatId}`);
         if (offset < req.data) {
           const newMessages = await axios.get(
-            `https://ofcourse.website/api/v3/ofcourse.website/get?topic=${chatId}&offset=${offset}`,
+            `https://ofcourse.website/api/v3/messages/get?topic=${chatId}&offset=${offset}`,
             { headers: { 'Content-Type': 'application/json' } }
           );
           if (newMessages.data.length > 0) {

@@ -4,8 +4,8 @@ metadata:
   name: azure-storage-secret
 type: Opaque
 data:
-  azurestorageaccountname: YWtzcGVyc2lzdGFuY2UNCg==
-  azurestorageaccountkey: NfB29wYRXRStG4MlYK4zy3ah9TKEm05e5fjlclX3a7Y74owEm0uj7T7XzRAP47TqC/orZRKcZgDb+AStHrF0Qw==
+  azurestorageaccountname: ${AZURE_STORAGE_ACCOUNT_NAME}
+  azurestorageaccountkey: ${AZURE_STORAGE_ACCOUNT_KEY}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -55,9 +55,9 @@ metadata:
  name: acr-secret
 type: Opaque
 data: 
- docker-server: cHNkZW1vYWNyYW5nZWxvLmF6dXJlY3IuaW8NCg==
- docker-username: cHNkZW1vYWNyYW5nZWxvDQo=
- docker-password: VTBvNk5rdit2Yzd3ZUVLUk55bXJ4Mjg2ZjZEc3VZWlFUZy93TG04Q3R2K0FDUkNrbGtTSg0K
+ docker-server: ${DOCKER_SERVER}
+ docker-username: ${DOCKER_USERNAME}
+ docker-password: ${DOCKER_PASSWORD}
 ---
 apiVersion: v1
 kind: Secret
@@ -65,14 +65,14 @@ metadata:
  name: postgresql-params
 type: Opaque
 data:
- jdbc_url: amRiYzpwb3N0Z3Jlc3FsOi8vZnBiZXBncWwucG9zdGdyZXMuZGF0YWJhc2UuYXp1cmUuY29tOjU0MzIvY3N0 
- host: ZnBiZXBncWwucG9zdGdyZXMuZGF0YWJhc2UuYXp1cmUuY29t
- port: NTQzMg==
- username: QW5nZWxv
- password: QmVsbGE1MTQh
- database: Y3N0
- CERT_PASSWORD: QmVsbGE1MTQhDQoNCg==
- SECRET_KEY: SGQ2UUNZZElBWDlVZUxCek9QdlBYQS9HdXdDcXVzNkFWZnNTdjZTOGJhOUlvcCtmSW9xUmQyTTVHWWpDNlJHQWRPR0ZSMWdCSDRHTFMzZFUyNEhva1NvWDNWdnZIaDlQbHI3aFkvV01GL0V1MmZDbWRrZTRWTUdTeko0bThmSGxDMi9xNVpQU2NQZnBLK1c4aWpLV2JJVlA4STRVQmsvWHE5SmN1U0VPb3VwZWJ4NVpEZzBNRElhUEl1LzNjazkySitNZitKc01KeksrQjd6MzFxWGpxN0x1enl1RjE4QmdOZWlocnp1K2NBMk5aN2k5dTFJa1JCZlQrUWRNbWdQbGt6M3RtTEFCMlpWS0NGbnc5RmRnNjlnbzNyaUtlNERXejd6bUUxeXovQ3VjZkhUVU8zcFh5am8wSXlacURtbkRjcWxyZml0U2UzMk1lZFA1OFBJNG1GYVJFK0c5ODIvOXcvRko5MkkwRys0
+ jdbc_url: ${JDBC_URL} 
+ host: ${HOST}
+ port: ${PORT}
+ username: ${USERNAME_MANIFEST}
+ password: ${PASSWORD}
+ database: ${DATABASE}
+ CERT_PASSWORD: ${CERT_PASSWORD}
+ SECRET_KEY: ${SECRET_KEY}
 ---
 apiVersion: v1
 kind: Secret
@@ -80,7 +80,7 @@ metadata:
  name: mongo-params
 type: Opaque
 data:
- url: bW9uZ29kYjovL2RvY2RiZnA6T2xzNXlFNUdxdm4waWt5emNSa2NjQWE4SEM3Z3E4QVNObTMyOXNkcHVhSktFbDE1cnV1eFYyNmZqNEgzQlZhbGM0VGZPeE83V3pTR0FDRGJ0QnUxaUE9PUBkb2NkYmZwLm1vbmdvLmNvc21vcy5henVyZS5jb206MTAyNTUvP3NzbD10cnVlJnJlcGxpY2FTZXQ9Z2xvYmFsZGImcmV0cnl3cml0ZXM9ZmFsc2UmbWF4SWRsZVRpbWVNUz0xMjAwMDAmYXBwTmFtZT1AZG9jZGJmcEA=
+ url: ${MONGO_URL}
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -166,7 +166,7 @@ spec:
             name: postgresql-params
             key: SECRET_KEY
       - name: STORAGE_STRING
-        value: DefaultEndpointsProtocol=https;AccountName=akspersistance;AccountKey=NfB29wYRXRStG4MlYK4zy3ah9TKEm05e5fjlclX3a7Y74owEm0uj7T7XzRAP47TqC/orZRKcZgDb+AStHrF0Qw==;EndpointSuffix=core.windows.net
+        value: ${STORAGE_STRING}
       - name: PDF_STORAGE
         value: pdfstorage
       - name: KEY
@@ -174,7 +174,7 @@ spec:
       - name: ZOOM_SDK_CLIENT_ID
         value: O06Zp5G2S1ORaByQI1UM6Q
       - name: ZOOM_SDK_CLIENT_SECRET
-        value: Pf208k2mmj5e7NeCTBM6KCPWEHPzCvni
+        value: ${ZOOM_SDK_CLIENT_SECRET}
       ports:
       - containerPort: 8081
 

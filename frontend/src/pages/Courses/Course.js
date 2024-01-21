@@ -144,7 +144,7 @@ export const Course = () => {
                 roster.length > 0 ? 
                 <div className='row'>
                 {roster.map(person =>{
-                    return <PersonCard name={person.username} image={person.profilePicture} id={person._id} />
+                    return <PersonCard canClick={true} name={person.username} image={person.profilePicture} id={person._id} />
                 })} </div>
                 : <h1 style={{textAlign:"center"}}>There are no enrolled students yet</h1>
                 }

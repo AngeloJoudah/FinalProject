@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     }],
     students:{
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Chats',
+        ref: 'User',
         required:false
     },
     email:{

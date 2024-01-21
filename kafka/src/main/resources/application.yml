@@ -1,0 +1,10 @@
+spring.kafka.bootstrap-servers: ${KAFKA_SERVER}
+spring.kafka.consumer.properties.auto.create.topics.enable: true
+spring.kafka.producer.properties.auto.create.topics.enable: true
+server:
+  port: 8082
+  ssl:
+    server.ssl.keyStoreType: PKCS12
+    key-store: classpath:backend.p12
+    key-store-password: Bella514!
+    enabled: true

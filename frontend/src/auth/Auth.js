@@ -1,25 +1,20 @@
-import { redirect } from "react-router";
-import { useState, createContext, useContext } from "react";
-import axios from "axios";
-import * as yup from 'yup';
+import { useState, createContext, useContext} from "react";
 
 const AuthContext = createContext(null)
 export const AuthProvider = ({children}) => {
-  const [user,setUser] = useState(null)
-  
-  const login = (user) => {
-    
-    const userObj = yup.object().shape({
-      name: yup.string().required(),
-      lastName: yup.string().required(),
-      username: yup.string().required(),
-      email : yup.string().required(),
-    });
-    
-    setUser(userObj)
+  const [user,setUser] = useState('')
+  const login = ({token, newUser}) => {
+    //setToken(token)
+    localStorage.setItem('token',token)
+    localStorage.setItem('user',newUser)
+    setUser(newUser)
   }
 
   const logout = () =>{
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('_id')
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     setUser(null)
   }
   

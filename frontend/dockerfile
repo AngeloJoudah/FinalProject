@@ -1,23 +1,17 @@
+# Stage 1: Build
 FROM node:alpine AS build
-ARG PGQL_HOST
-ARG PGQL_PORT
-ARG PGQL_USERNAME
-ARG PGQL_PASSWORD
-ARG PGQL_DATABASE
-ARG MG_URL
-ENV PGQL_HOST=$PGQL_HOST
-ENV PGQL_PORT=$PGQL_PORT
-ENV PGQL_USERNAME=$PGQL_USERNAME
-ENV PGQL_PASSWORD=$PGQL_PASSWORD
-ENV PGQL_DATABASE=$PGQL_DATABASE
-ENV MG_URL=$MG_URL
-RUN mkdir /app
-WORKDIR /app/
+WORKDIR /app
 COPY ./../ ./
-RUN npm i
-RUN npm run build --omit=dev
+RUN npm install
+RUN npm run build
+
+# Stage 2: Final image
 FROM node:alpine
-WORKDIR /app/
-COPY --from=build /app/build/ ./dist
-EXPOSE 80
-CMD ['serve','-p','80']
+WORKDIR /app
+COPY --from=build /app/build /app/build
+COPY --from=build /app/src/certs /app/certs/
+EXPOSE 443
+RUN npm install -g serve
+ENV HTTPS=true
+CMD npx serve -p 443 -s build --ssl-cert /app/certs/backend.crt --ssl-key /app/certs/backend.key
+

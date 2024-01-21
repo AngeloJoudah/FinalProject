@@ -1,14 +1,6 @@
 import createListener from 'pg-listen'
-import { configDotenv } from 'dotenv'
-import { modelUser } from './user'
-import mongoose from 'mongoose'
-
+import { response} from './response'
 const {Client} = require('pg')
-
-configDotenv({
-    path:'./.env'
-})
-const url:string = process.env.MG_URL || ""
 
 const pgconfig = {
     user:process.env.PGQL_USERNAME,
@@ -16,36 +8,34 @@ const pgconfig = {
     database:process.env.PGQL_DATABASE,
     password:process.env.PGQL_PASSWORD,
     port:Number(process.env.PGQL_PORT),
-    ssl:true
+    ssl:true//Change when using 
 }
 
-interface notification{
-    username:string,
-    name:string,
-    last_name:string
+
+interface data{
+        username:String
+        name:String,
+        last_name:String,
+        type:String,
+        _id:Number,
+        email:String
 }
+
+export interface notification{
+    data:data,
+    operation:string
+}
+
+
+
 const updateMongoDB = async (notification:notification) =>{
-    const {username,name,last_name} = notification
-    const newUser = new modelUser({username:username,firstName:name,lastName:last_name})
-    await mongoconnect()
-    await newUser.save().then(e =>{
-        e
-    })
-    mongoose.connection.close()
-}
-
-
-
-const mongoconnect = async() => {
-    mongoose.set('strictQuery',false)
-    const connection = await mongoose.connect(url)
-    return connection
+    await response(notification)
 }
 
 
 const pgClient = new Client(pgconfig)
 const listener = createListener(pgconfig)
-listener.notifications.on('users',updateMongoDB)
+listener.notifications.on('_user',updateMongoDB)
 
 const app = async () =>{
     try {
@@ -53,7 +43,7 @@ const app = async () =>{
         console.log('Connected to PostgreSQL');
         await listener.connect();
         console.log('Listening for changes...');
-        await listener.listenTo('users')
+        await listener.listenTo('_user')
       } catch (err) {
         console.error('Error connecting to PostgreSQL:', err);
       }

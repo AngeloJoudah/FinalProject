@@ -1,0 +1,331 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-storage-secret
+type: Opaque
+data:
+  azurestorageaccountname: ${AZURE_STORAGE_ACCOUNT_NAME}
+  azurestorageaccountkey: ${AZURE_STORAGE_ACCOUNT_KEY}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: azure-file-pv
+  annotations:
+    pv.kubernetes.io/provisioned-by: file.csi.azure.com
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  csi:
+    driver: file.csi.azure.com
+    readOnly: false
+    volumeHandle: unique-volumeid  # make sure this volumeid is unique for every identical share in the cluster
+    volumeAttributes:
+      shareName: aksshare
+    nodeStageSecretRef:
+      name: azure-storage-secret
+      namespace: default
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=0
+    - gid=0
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-file-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-csi
+  resources:
+    requests:
+      storage: 100Gi 
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: acr-secret
+type: Opaque
+data: 
+ docker-server: ${DOCKER_SERVER}
+ docker-username: ${DOCKER_USERNAME}
+ docker-password: ${DOCKER_PASSWORD}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: postgresql-params
+type: Opaque
+data:
+ jdbc_url: ${JDBC_URL} 
+ host: ${HOST}
+ port: ${PORT}
+ username: ${USERNAME_MANIFEST}
+ password: ${PASSWORD}
+ database: ${DATABASE}
+ CERT_PASSWORD: ${CERT_PASSWORD}
+ SECRET_KEY: ${SECRET_KEY}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: mongo-params
+type: Opaque
+data:
+ url: ${MONGO_URL}
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: messages
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  replicas: 3
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 3.6.0
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+    config:
+      auto.create.topics.enable: true
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      inter.broker.protocol.version: "3.3"
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: webapp-deployment
+ labels:
+  app: webapp
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   app: webapp
+ template:
+  metadata:
+    labels:
+      app: webapp
+  spec:
+    containers:
+    - name: frontend
+      image: psdemoacrangelo.azurecr.io/fpfe:latest
+      ports:
+      - containerPort: 443
+        protocol: TCP
+        name: http
+      #env:
+      #- name: HOST
+      #  value: ofcourse.website
+    - name: course-api
+      image: psdemoacrangelo.azurecr.io/courseapi:latest
+      env:
+      - name: MG_URL
+        valueFrom:
+          secretKeyRef:
+            name: mongo-params
+            key: url
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: SECRET_KEY
+      - name: STORAGE_STRING
+        value: ${STORAGE_STRING}
+      - name: PDF_STORAGE
+        value: pdfstorage
+      - name: KEY
+        value: NfB29wYRXRStG4MlYK4zy3ah9TKEm05e5fjlclX3a7Y74owEm0uj7T7XzRAP47TqC/orZRKcZgDb+AStHrF0Qw==
+      - name: ZOOM_SDK_CLIENT_ID
+        value: O06Zp5G2S1ORaByQI1UM6Q
+      - name: ZOOM_SDK_CLIENT_SECRET
+        value: ${ZOOM_SDK_CLIENT_SECRET}
+      ports:
+      - containerPort: 8081
+
+    - name: kafka
+      image: psdemoacrangelo.azurecr.io/kafka:latest
+      env:
+      - name: KAFKA_SERVER
+        value: my-cluster-kafka-bootstrap.default.svc.cluster.local:9092
+      ports:
+      - containerPort: 8082
+
+    - name: user-api
+      image: psdemoacrangelo.azurecr.io/fpbe:latest
+      env:
+      - name: URL
+        valueFrom:
+         secretKeyRef:
+          name: postgresql-params
+          key: jdbc_url
+      - name: USERNAME
+        valueFrom:
+         secretKeyRef:
+          name: postgresql-params
+          key: username
+      - name: PSWD
+        valueFrom:
+         secretKeyRef:
+          name: postgresql-params
+          key: password
+      - name: CERT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: CERT_PASSWORD
+      ports:
+      - containerPort: 8080
+    - name: micro-services-pg2mongo
+      image: psdemoacrangelo.azurecr.io/micro-services-pg2mong:latest
+      env:
+      - name: MG_URL
+        valueFrom:
+          secretKeyRef:
+            name: mongo-params
+            key: url
+      - name: PGQL_HOST
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: host
+      - name: PGQL_PORT
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: port
+      - name: PGQL_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: username
+      - name: PGQL_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: password
+      - name: PGQL_DATABASE
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-params
+            key: database
+    volumes:
+      - name: secret-volume
+        secret:
+          secretName: backend-tls
+    imagePullSecrets:
+    - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: webapp-service
+ labels:
+   app: webapp
+   
+spec:
+ type: LoadBalancer
+ selector:
+   app: webapp
+ ports:
+   - name: http
+     protocol: TCP
+     port: 443
+     targetPort: 443
+   - name: api-v1
+     protocol: TCP
+     port: 8080
+     targetPort: 8080
+   - name: api-v2
+     protocol: TCP
+     port: 8081
+     targetPort: 8081
+   - name: api-v3
+     protocol: TCP
+     port: 8082
+     targetPort: 8082
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    appgw.ingress.kubernetes.io/backend-protocol: "https"
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: https-secure
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/backend-hostname: backend
+    appgw.ingress.kubernetes.io/appgw-trusted-root-certificate: backend-tls
+spec:
+  ingressClassName: azure-application-gateway
+  tls:
+    - hosts:
+        - ofcourse.website
+  #      secretName: 
+  rules:
+   - host: ofcourse.website
+     http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port:
+              number: 443
+      - path: /api/v1/*
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port: 
+              number: 8080
+      - path: /api/v2/*
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port: 
+              number: 8081
+      - path: /api/v3/*
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port: 
+              number: 8082

@@ -1,11 +1,12 @@
-import React from 'react'
-import { useAuth } from '../auth/Auth'
-import { Navigate } from 'react-router'
+import { useLocation } from 'react-router';
+//import * as jsonwebtoken from 'jsonwebtoken'
+import { Navigate } from 'react-router';
+export const RequireAuth = ({children}) => {
+  const location = useLocation();
+  const user = localStorage.getItem('user')
+  if(!user){
+    return <Navigate to={'/login'} state={{ path: location.pathname }} />;
+  }
+  return children
 
-export const RequireAuth = () => {
-    const auth = useAuth()
-    if(!auth.user){
-        return <Navigate to={'/login'}/>
-    }
-    
-}
+};

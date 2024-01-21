@@ -12,6 +12,18 @@ const courseSchema = new mongoose_1.default.Schema({
     author: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    roster: {
+        type: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
+    },
+    enrolling: {
+        type: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }]
+    },
+    assignments: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Assignments' }],
+    code: {
+        type: String,
+        required: true,
+        unique: true
     }
 });
 exports.modelCourse = mongoose_1.default.model('Course', courseSchema);

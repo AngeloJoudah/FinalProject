@@ -1,11 +1,18 @@
 server:
   port: 8080
-  
+    #  servlet:
+    #    context-path: /fpbe
+  ssl:
+    server.ssl.keyStoreType: PKCS12
+    #server.ssl.keyAlias: tomcat
+    key-store: classpath:backend.p12
+    key-store-password: Bella514!
+    enabled: true
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PSWD}
+    url: ${URL}
+    username: ${USERNAME}
+    password: ${PSWD}
   jpa:
     show-sql: true
     hibernate:
@@ -15,6 +22,8 @@ spring:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       format_sql: true
   web-application-type: servlet
+
+logging.level.org.springframework.web: DEBUG
 
 
 

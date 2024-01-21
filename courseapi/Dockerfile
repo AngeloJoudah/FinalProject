@@ -6,9 +6,10 @@ ENV MG_URL=$MG_URL
 
 WORKDIR /app
 COPY ./ ./
-RUN npm i --omit=dev
+RUN npm i
 RUN npx tsc
 FROM node:alpine
 WORKDIR /app
-COPY --from=build /app/build /app/dist
-CMD ["node","app.js"]
+COPY --from=build /app /app
+EXPOSE 8081
+CMD ["node","build/app.js"]

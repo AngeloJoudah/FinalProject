@@ -9,9 +9,20 @@ const userSchema = new mongoose_1.default.Schema({
     firstName: String,
     lastName: String,
     username: String,
+    profilePicture: String,
     courses: [{
             type: mongoose_1.default.Schema.Types.ObjectId,
             ref: 'Course'
-        }]
+        }],
+    chats: [{
+            user: String,
+            other: String
+        }],
+    userType: {
+        type: String,
+        enum: ['Instructor', 'Student'],
+        required: true
+    }
 });
+userSchema.index({ username: 1 }, { unique: true });
 exports.modelUser = mongoose_1.default.model('User', userSchema);

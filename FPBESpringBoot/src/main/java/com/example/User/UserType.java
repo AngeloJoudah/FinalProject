@@ -1,7 +1,7 @@
 package com.example.User;
 
 public enum UserType {
-	TEACHER("Teacher"),LEGALGUARDIAN("Legal_Guardian"),PARENT("Parent");
+	TEACHER("Teacher"),LEGALGUARDIAN("Legal_Guardian"),PARENT("Parent"),STUDENT("Student");
 
     private final String type;
 

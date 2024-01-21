@@ -3,58 +3,52 @@ services:
   user-api:
     ports:
       - "8080:8080"
-    environment:
-     - URL=$URL
-     - USERNAME=$USERNAME
-     - PSWD=$PSWD
     build:
-      args:
-       - URL
-       - USERNAME
-       - PSWD
       context: ./FPBESpringBoot/
       dockerfile: Dockerfile
-    image: $AZURE_REGISTRY_SERVER/fpbe:latest
+    image: psdemoacrangelo.azurecr.io/fpbe:latest
   front-end:
     ports:
-    - "80:80"
+      - "443:443"
     build:
-       context: ./frontend
-       dockerfile: dockerfile
-    image: $AZURE_REGISTRY_SERVER/fpfe:latest
+      context: ./frontend
+      dockerfile: dockerfile
+    image: psdemoacrangelo.azurecr.io/fpfe:latest
   micro-services-pg2mongo:
-   image: $AZURE_REGISTRY_SERVER/micro-services-pg2mong:latest
-   environment:
-    - PGQL_HOST=$PGQL_HOST
-    - PGQL_PORT=$PGQL_PORT
-    - PGQL_USERNAME=$PGQL_USERNAME
-    - PGQL_PASSWORD=$PGQL_PASSWORD
-    - PGQL_DATABASE=$PGQL_DATABASE
-    - MG_URL=$MG_URL
-   build:
-    args:
-      - PGQL_HOST
-      - PGQL_PORT
-      - PGQL_USERNAME
-      - PGQL_PASSWORD
-      - PGQL_DATABASE
-      - MG_URL
-    context: ./micro-services-pg2mongo
-    dockerfile: Dockerfile
-  courseapi:
-    ports:
-     - "80:8081"
-
-    environment:
-     - MG_URL=$MG_URL
+    image: psdemoacrangelo.azurecr.io/micro-services-pg2mong:latest
     build:
+      context: ./micro-services-pg2mongo
+      dockerfile: Dockerfile
+  courseapi:
+   ports:
+      - "8081:8081"
+   build:
+    dockerfile: Dockerfile
+    context: ./courseapi
+   image: psdemoacrangelo.azurecr.io/courseapi:latest
+  kafka:
+   ports:
+     - "9092:9092"
+   build:
+     context: ./kafka/
      dockerfile: Dockerfile
-     context: ./courseapi
-     args:
-      - MG_URL
-    image: $AZURE_REGISTRY_SERVER/courseapi:latest
-  
+   image: psdemoacrangelo.azurecr.io/kafka:latest
 
 
-
-
+  #nginx-proxy:
+  # image: psdemoacrangelo.azurecr.io/nginx:latest
+  # build:
+  #  context: ./nginx/
+  #  dockerfile: Dockerfile
+  # ports:
+  #  - "80:80"
+  #  - "443:443"
+ #  volumes:
+ #   - WEBAPP_STORAGE_HOME:/etc/nginx/conf.d
+  # depends_on:
+  #  - user-api
+  #  - front-end
+  #  - micro-services-pg2mongo
+  #  - courseapi
+#volumes:
+#  WEBAPP_STORAGE_HOME:
